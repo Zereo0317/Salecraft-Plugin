@@ -65,6 +65,12 @@
 
 ---
 
+## 🔴 Rule 7.5 — TOOL CALLS
+
+Connector 只露出**一個** tool：`mcp_tool_call(server_name, tool_name, arguments)`。本檔 + 所有 SKILL.md 裡的 `name(args)` 簡寫都是**描述用**，實際呼叫必須包進 `mcp_tool_call`。Server 路由、canonical syntax、auth flow、create-and-poll / edit / publish / ad-campaign pattern、JSON 參數慣例、error handling — 全在 [`lib/mcp-patterns.md`](./lib/mcp-patterns.md)。
+
+---
+
 ## 🔴 Rule 6.5 — NO SILENT DEFAULTS（每個 wizard 設定都要「被碰到」）
 
 每個寫入 `wizard_shared_data` / `wizard_ta_groups` 的欄位、必須處在恰好兩種狀態之一：
@@ -892,19 +898,25 @@ digitize_product_text(image_urls_json, industry_category, product_name, brand_na
 
 **方法 A：快速廣告圖（~5 min）**
 ```
-generate_ad(session_id, { ta_group_id, aspect_ratio, ad_goal })
+mcp_tool_call("landing_ai_mcp", "generate_ad",
+              {"session_id": ..., "ta_group_id": ...,
+               "aspect_ratio": ..., "ad_goal": ...})
 → project_id; status: processing
-poll get_ad_result(session_id, project_id) 每 30s
+poll mcp_tool_call("landing_ai_mcp", "get_ad_result",
+                   {"session_id": ..., "project_id": ...}) 每 30s
 → image_url
-social_copy → caption
-publish_post({ social_account_id, post_type: "ig_post", caption, image_url })
+mcp_tool_call("landing_ai_mcp", "social_copy", {...}) → caption
+mcp_tool_call("zereo_social_mcp", "publish_post",
+              {"social_account_id": ..., "post_type": "ig_post",
+               "caption": ..., "image_url": ...})
 ```
 
 **方法 B：從既有 LP 取圖**
 ```
-download_stripe(campaign_id, stripe_idx) → image URL
-social_copy → caption
-publish_post(...)
+mcp_tool_call("landing_ai_mcp", "download_stripe",
+              {"campaign_id": ..., "stripe_idx": ...}) → image URL
+mcp_tool_call("landing_ai_mcp", "social_copy", {...}) → caption
+mcp_tool_call("zereo_social_mcp", "publish_post", {...})
 ```
 
 時間：廣告圖 ~5 min / LP ~30 min / 從 LP 提圖 ~1 min / 文案 ~30s / 發 IG ~10s。**不要說生圖要 30 分鐘**——那是 LP 的時間。
@@ -912,17 +924,19 @@ publish_post(...)
 ### Carousel（多張、風格一致）
 
 ```
-generate_carousel(session_id, {
-  ta_group_id, num_images: 5, aspect_ratio: "1:1",
-  carousel_narrative: "hook → features → proof → CTA"
+mcp_tool_call("landing_ai_mcp", "generate_carousel", {
+  "session_id": ..., "ta_group_id": ...,
+  "num_images": 5, "aspect_ratio": "1:1",
+  "carousel_narrative": "hook → features → proof → CTA"
 })
 → project_id
 
-poll get_carousel_result 每 30s（最多 20 次）
+poll mcp_tool_call("landing_ai_mcp", "get_carousel_result", {...}) 每 30s（最多 20 次）
 → image_urls[], ad_copy { headline, body_text, hashtags, cta_text }
 
-publish_post({ social_account_id, post_type: "ig_post",
-               caption: ad_copy.body_text, image_urls })
+mcp_tool_call("zereo_social_mcp", "publish_post",
+              {"social_account_id": ..., "post_type": "ig_post",
+               "caption": ad_copy.body_text, "image_urls": image_urls})
 ```
 
 連貫性：第一張作 reference + histogram matching + prompt 共用色調 / 字體 / 情緒弧。

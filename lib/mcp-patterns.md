@@ -4,15 +4,24 @@
 
 ## Universal Call Pattern
 
-All MCP tools are called through the Service System Deep Research proxy:
+The plugin connector exposes **exactly one MCP tool**: `mcp_tool_call`. Every individual tool name (`create_session`, `generate_session`, `generate_ad`, `publish_post`, …) is reached **through** it — never as a first-class tool. If you call a name directly the connector replies with `Tool '...' is not exposed on the Landing AI plugin endpoint. Use mcp_tool_call(...) instead.`
 
 ```
-mcp__claude_ai_Service_System_Deep_Research__mcp_tool_call(
-  server_name = "<mcp_server_name>",
+mcp_tool_call(
+  server_name = "<mcp_server_name>",   // see "Server routing" below
   tool_name   = "<tool_name>",
   arguments   = { "param1": "value1", "param2": "value2" }
 )
 ```
+
+### Server routing (decides `server_name`)
+
+| Tool family | `server_name` |
+|-------------|---------------|
+| Auth / session / brand / TA / image / generate / edit / homepage / brand-memory / market-intel | `landing_ai_mcp` |
+| Meta / TikTok publish, ad campaigns, QR codes, KOL, goals / plans | `zereo_social_mcp` |
+
+The plugin endpoint also enforces this whitelist server-side, so a typo or non-allowed `server_name` will be rejected with `Server '...' is not allowed on the Landing AI plugin endpoint.`
 
 ## Authentication Flow (AI Token only — never email/password)
 

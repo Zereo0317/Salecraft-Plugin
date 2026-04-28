@@ -254,23 +254,34 @@ mcp_tool_call("zereo_social_mcp", "publish_post", {
 **⚠️ 用戶說「發一則貼文」= 需要圖片 + 文案，不是純文字。**
 
 ### 快速生成廣告圖（推薦，~5 分鐘）
+
+> 步驟用 shorthand 描述，每行 `tool(args)` 都要包成 `mcp_tool_call(server_name=..., tool_name="tool", arguments={args})`。`generate_ad / get_ad_result / social_copy` 走 `landing_ai_mcp`、`publish_post` 走 `zereo_social_mcp`。
+
 ```
-1. generate_ad(session_id, { ta_group_id: "ta_1", aspect_ratio: "1:1", ad_goal: "awareness" })
+1. mcp_tool_call("landing_ai_mcp", "generate_ad",
+                 {"session_id": ..., "ta_group_id": "ta_1",
+                  "aspect_ratio": "1:1", "ad_goal": "awareness"})
    // ⚠️ 不要傳 platform —— schema extra=forbid 會 422。
    //    平台選擇（meta/tiktok/google）在 publish_post / create_ad_campaign 那步才決定。
    → project_id, status: "processing"
-2. 每 30 秒 poll: get_ad_result(session_id, project_id)
+2. 每 30 秒 poll: mcp_tool_call("landing_ai_mcp", "get_ad_result",
+                                 {"session_id": ..., "project_id": ...})
    → status: "completed" → 取得 image_url
-3. social_copy(user_token, { conversation_id, quantity: 1 })
+3. mcp_tool_call("landing_ai_mcp", "social_copy",
+                 {"user_token": ..., "conversation_id": ..., "quantity": 1})
    → 生成文案
-4. publish_post({ social_account_id, post_type: "ig_post", caption, image_url })
+4. mcp_tool_call("zereo_social_mcp", "publish_post",
+                 {"social_account_id": ..., "post_type": "ig_post",
+                  "caption": ..., "image_url": ...})
 ```
 
 ### 從 Landing Page 取圖
+
 ```
-1. download_stripe(campaign_id, stripe_idx) → image URL
-2. social_copy → 文案
-3. publish_post(...)
+1. mcp_tool_call("landing_ai_mcp", "download_stripe",
+                 {"campaign_id": ..., "stripe_idx": ...})  → image URL
+2. mcp_tool_call("landing_ai_mcp", "social_copy", {...})   → 文案
+3. mcp_tool_call("zereo_social_mcp", "publish_post", {...})
 ```
 
 **時間：廣告圖 ~5 分鐘，LP 取圖 ~1 分鐘。不要跟用戶說要 30 分鐘。**
@@ -565,36 +576,53 @@ Backend 在排程觸發時會對媒體 URL 做預檢、redirect-based URL（pics
 
 **標準流程**（以 3 篇 FB 為例）：
 
+> 以下是 procedural shorthand（描述要做的事）。每個 `name(args)` **必須**包成
+> `mcp_tool_call(server_name=..., tool_name="name", arguments={args})` 才是合法呼叫——server_name
+> `landing_ai_mcp` 用於 generate / poll，`zereo_social_mcp` 用於 list / parse / schedule
+> （詳見 CLAUDE.md「Rule 7.5」與 `lib/mcp-patterns.md`）。
+
 ```python
-# 1. 找 FB 帳號
-accounts = list_accounts(user_token=token)
+# 1. 找 FB 帳號  → mcp_tool_call("zereo_social_mcp", "list_accounts", {"user_token": token})
+accounts = ...
 fb_account_id = next(a["id"] for a in accounts if a["platform"] == "facebook")
 
-# 2. 解析時間
-schedule = parse_schedule(user_token=token, text="今晚8點")
+# 2. 解析時間  → mcp_tool_call("zereo_social_mcp", "parse_schedule",
+#                              {"user_token": token, "text": "今晚8點"})
+schedule = ...
 scheduled_at = schedule["schedules"][0]["datetime_iso"]  # e.g. "2026-04-25T20:00:00+08:00"
 
 # 3. Loop 生成 + 排程（每篇獨立內容、共用 scheduled_at）
 results = []
 for i in range(3):
     # 3a. 生成廣告圖（200 pts）
-    ad = generate_ad(user_token=token, session_id=session_id,
-                     data_json='{"ta_group_id":"ta_1","aspect_ratio":"1:1","ad_goal":"awareness"}')
-    image_url = poll_until_done(get_ad_result, ad["project_id"])  # ~5min
+    #     → mcp_tool_call("landing_ai_mcp", "generate_ad", {
+    #         "user_token": token, "session_id": session_id,
+    #         "data_json": '{"ta_group_id":"ta_1","aspect_ratio":"1:1","ad_goal":"awareness"}'
+    #       })
+    ad = ...
+    # poll: → mcp_tool_call("landing_ai_mcp", "get_ad_result", {"project_id": ad["project_id"]})
+    image_url = ...  # ~5min
 
     # 3b. 生成文案（100 pts）
-    copy = social_copy(user_token=token,
-                       data_json=f'{{"conversation_id":"{conv_id}","quantity":1}}')
+    #     → mcp_tool_call("landing_ai_mcp", "social_copy", {
+    #         "user_token": token,
+    #         "data_json": f'{{"conversation_id":"{conv_id}","quantity":1}}'
+    #       })
+    copy = ...
     caption = copy["copies"][0]["caption"]
 
     # 3c. 排程（免費）
-    post = schedule_post(user_token=token, data_json=json.dumps({
-        "social_account_id": fb_account_id,
-        "post_type": "fb_post",
-        "scheduled_at": scheduled_at,   # ⚠ 三篇都用同一個時間
-        "caption": caption,
-        "image_url": image_url,
-    }))
+    #     → mcp_tool_call("zereo_social_mcp", "schedule_post", {
+    #         "user_token": token,
+    #         "data_json": json.dumps({
+    #           "social_account_id": fb_account_id,
+    #           "post_type": "fb_post",
+    #           "scheduled_at": scheduled_at,   # ⚠ 三篇都用同一個時間
+    #           "caption": caption,
+    #           "image_url": image_url,
+    #         })
+    #       })
+    post = ...
     results.append(post)
 
     # Partial failure policy: ABORT

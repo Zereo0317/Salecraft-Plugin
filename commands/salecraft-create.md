@@ -9,6 +9,8 @@ Follow **CLAUDE.md → Wizard 結構 6-step**. Do NOT invent your own phase stru
 
 **Cost model reminder**: `create_session` + `update_session` + `analyze_brand_url` + `validate_images` + `digitize_product_text` + `generate_ta_options` + `generate_ta_spokesperson` are **ALL FREE**. Only `generate_session` deducts points. So: build session early, write progressively.
 
+> **Tool call convention**: every `name(args)` shorthand below is **descriptive**. Real call form is `mcp_tool_call(server_name="landing_ai_mcp", tool_name="name", arguments={args})`. See CLAUDE.md「Rule 7.5」for the full convention and `lib/mcp-patterns.md` for canonical examples.
+
 ---
 
 ## Step 0 — Auth (hand user the AI Token prompt)
@@ -21,7 +23,8 @@ Required BEFORE anything else. `create_session` needs `access_token`.
   ② 點「複製 AI 登入 Token」
   ③ 貼 sc_live_... 回來給我」
 
-拿到 → authenticate_with_token(ai_token) → access_token
+拿到 → mcp_tool_call("landing_ai_mcp", "authenticate_with_token",
+                     {"ai_token": "sc_live_..."}) → access_token
 ```
 
 NEVER ask for email/password.
@@ -31,7 +34,12 @@ NEVER ask for email/password.
 ## Step 1 — Create session IMMEDIATELY (placeholder names OK)
 
 ```
-create_session(user_token, session_name="[LP] 新建中", brand_name="Pending", product_name="Pending")
+mcp_tool_call("landing_ai_mcp", "create_session", {
+  "user_token": <access_token>,
+  "session_name": "[LP] 新建中",
+  "brand_name":   "Pending",
+  "product_name": "Pending",
+})
 → session_id
 ```
 
@@ -61,11 +69,17 @@ Follow `skills/brand-onboard/SKILL.md`. Key actions:
 
 ## Step 3 — Quality Gate (MANDATORY if product images exist)
 
-Run in parallel, both with `session_id`:
+Run in parallel, both with `session_id` (each call wraps as `mcp_tool_call("landing_ai_mcp", "<tool>", {...})`):
 
 ```
-validate_images(session_id, image_urls_json=[...], industry_category, product_name, brand_name)
-digitize_product_text(session_id, image_urls_json=[...], industry_category, product_name, brand_name)
+mcp_tool_call("landing_ai_mcp", "validate_images", {
+  "session_id": ..., "image_urls_json": [...],
+  "industry_category": ..., "product_name": ..., "brand_name": ...,
+})
+mcp_tool_call("landing_ai_mcp", "digitize_product_text", {
+  "session_id": ..., "image_urls_json": [...],
+  "industry_category": ..., "product_name": ..., "brand_name": ...,
+})
 ```
 
 - `overall_passed=false` → show `summary_message_zh` + translate `issue_codes` (blurry / low_res / text_unreadable / off_product) + ask per `missing_categories_labels_zh`
@@ -79,7 +93,8 @@ Do NOT proceed to Step 4 until gate passed or override set.
 ## Step 4 — TA selection (invoke `audience-target` skill)
 
 ```
-generate_ta_options(session_id, ...)  → 4-6 candidate TAs
+mcp_tool_call("landing_ai_mcp", "generate_ta_options",
+              {"session_id": ..., ...})  → 4-6 candidate TAs
 ```
 
 **List each candidate line by line** (name / age / motivation / concerns 4 fields each). Do NOT fabricate TAs.
@@ -173,7 +188,11 @@ Follow `skills/generate-landing/SKILL.md` Phase 3 Step 0. `get_session`, run the
 Only after user's explicit start word (「開始 / go / start / 執行 / 開跑」，NOT vague 「好 / OK」).
 
 ```
-generate_session(session_id, ta_group_ids_json=[...], requested_stripe_count=N)
+mcp_tool_call("landing_ai_mcp", "generate_session", {
+  "session_id": ...,
+  "ta_group_ids_json": [...],
+  "requested_stripe_count": N,
+})
 → project_ids
 ```
 
