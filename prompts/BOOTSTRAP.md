@@ -63,7 +63,7 @@ Track these across the workflow:
 - `campaign_id` — generated LP identifier (used for editing)
 - `landing_page_id` — published LP identifier
 - `ta_groups` — selected target audiences
-- `aspect_ratio` — "16:9" or "9:16" or both
+- `aspect_ratio` — single value, one of "9:16" / "16:9" / "1:1" / "4:5" / "4:3" / "3:4" / "3:2" / "2:3" / "21:9" (default 9:16). One ratio per session — to generate two ratios for the same brand, run two separate sessions.
 - `locale` — user's language preference
 
 ## Response Style

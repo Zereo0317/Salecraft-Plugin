@@ -932,7 +932,7 @@ mcp_tool_call("landing_ai_mcp", "get_generation_settings", { "user_token": token
 
 ### Calculate cost
 ```
-total_lps = num_selected_TAs × num_aspect_ratios
+total_lps = num_selected_TAs    // one ratio per session — multi-ratio = run two sessions
 credits_per_lp = stripe_count × credits_per_page  // from get_generation_settings
 total_credits = total_lps × credits_per_lp
 ```
@@ -943,9 +943,10 @@ total_credits = total_lps × credits_per_lp
 🎯 Generation Config:
 ━━━━━━━━━━━━━━━━━━━━━
 
+Aspect Ratio (whole LP): [aspect_ratio]   // shared, one value for the session
 Target Audiences: [count] selected
-  #1: [TA Name] ([aspect_ratio])
-  #2: [TA Name] ([aspect_ratio])
+  #1: [TA Name]
+  #2: [TA Name]
 
 🎨 Visual:
 - Colors: [primary] (primary) + [accent] (accent)
@@ -1091,7 +1092,7 @@ Session: [session_id]
 Store and pass to Phase 3 (generate-landing):
 - `ta_groups`: array of selected TA configs
 - `ta_group_ids`: IDs from get_ta_statuses (e.g., `["ta_1"]`)
-- `aspect_ratio`: "16:9" | "9:16" | "both"
+- `aspect_ratio`: single value, one of `"9:16"` / `"16:9"` / `"1:1"` / `"4:5"` / `"4:3"` / `"3:4"` / `"3:2"` / `"2:3"` / `"21:9"`. One ratio per session — for two ratios on the same brand, run two separate sessions.
 - `locale`: user's preferred language
 - `brand_id`: from Phase 1
 - `session_id`: from create_session (created in Phase 3 or here)

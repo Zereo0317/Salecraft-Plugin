@@ -1078,6 +1078,52 @@ If `get_stripe_regen_status` always shows `is_regenerating: false` and `regenera
 - Try regenerating from the frontend UI to compare behavior
 - This is a backend infrastructure issue, not an MCP issue
 
+## Aspect Ratio Switch (post-generation)
+
+LP 生成完才想換比例（例：原本 9:16、現在要橫版）：**`regenerate_stripe` 改不了 ratio**。每張 stripe 沿用建立時的 `stripe.aspect_ratio`、worker 不重讀 session 的 aspect_ratio。要整張 LP 換比例，必須**走新 session 重生**：
+
+1. 跟使用者**明說**扣費：「換整張 LP 的比例會再扣一次完整 LP 的費用（≈ stripe_count × 200 pts）、舊 LP 會保留、確定嗎？」
+2. 使用者明確 yes：
+   ```
+   # Step 1: 拿到原 session 的 spec（用來 copy）
+   old = mcp_tool_call("landing_ai_mcp", "get_session", {
+     "user_token": token, "session_id": original_session_id
+   })
+
+   # Step 2: 開新 session
+   new = mcp_tool_call("landing_ai_mcp", "create_session", {
+     "user_token": token,
+     "session_name": f"{old['session_name']} (16:9)",
+     "brand_name": old["brand_name"],
+     "product_name": old["product_name"],
+   })
+
+   # Step 3: 把原 spec 複製進新 session、只改 aspect_ratio
+   new_shared = old["wizard_shared_data"].copy()
+   new_shared["aspect_ratio"] = "<new ratio>"
+   mcp_tool_call("landing_ai_mcp", "update_session", {
+     "user_token": token, "session_id": new["id"],
+     "data_json": json_dumps({
+       "wizard_shared_data": new_shared,
+       "wizard_ta_groups": old["wizard_ta_groups"],
+     })
+   })
+
+   # Step 4: 直接 generate（spec 都複製過去、不重跑 Wizard 1-4）
+   mcp_tool_call("landing_ai_mcp", "generate_session", {
+     "user_token": token, "session_id": new["id"],
+     "ta_group_ids_json": json_dumps([t["id"] for t in old["wizard_ta_groups"]]),
+     "requested_stripe_count": old["wizard_shared_data"]["requested_stripe_count"]
+   })
+   ```
+3. 舊 LP 保留（使用者自己選擇要不要 `delete_session`、預設留著）
+4. 兩個 session 完成後、把兩個 LP URL 都列給使用者
+
+**禁止做的事**：
+- ❌ 對舊 session call `update_session(aspect_ratio=...)` 後預期它「下次 stripe 重生會用新比例」 — 不會、stripe 各自帶 ratio、只有新 stripe（新 session 觸發 generate）才會用新值
+- ❌ 把 `regenerate_stripe(stripe_idx, ...)` 一條一條打過去想「順便換比例」 — 同上、worker 不換 ratio
+- ❌ 跳過扣費確認直接 create_session → generate
+
 ## Export Options
 
 When user is done editing:

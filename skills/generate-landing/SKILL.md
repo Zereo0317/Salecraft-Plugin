@@ -415,7 +415,7 @@ Backend 把 Phase 2 spec 分成兩類儲存：
 
 | 欄位 | 可從這些 signal 推 | 推斷範例 |
 |------|-------------------|---------|
-| `aspect_ratio` | saleskit / brand-onboard 對話提到渠道（IG 限時 / TikTok / 桌機官網 / Google Ads） | 提過「IG 限時」→ `9:16`；提過「官網 hero」→ `16:9`；沒提或兩邊都要 → 預設兩邊 |
+| `aspect_ratio` | saleskit / brand-onboard 對話提到渠道：IG 限時 / TikTok / Reels 直拿；FB / IG 動態消息（feed）；桌機官網 hero / Google Ads / 簡報；IG 方版貼文 | 提過「IG 限時」/「TikTok」/「Reels」→ `9:16`；提過「官網 hero」/「Google Ads 桌機」→ `16:9`；提過「IG 方版貼文」/「FB 方版貼文」→ `1:1`；提過「IG 動態消息直拿」/「FB feed portrait」→ `4:5`；都沒提 → 預設 `9:16`（最廣用途）。**禁用 `"both"`** — backend 一個 session 只生一個 ratio；使用者要兩個比例 → 跟使用者明說「分兩次 session 各跑一個比例」（同 stripe_count 不能混搭的處理） |
 | `language` | 使用者對話主要語言 + brand scrape language + TA ta_description 語言 | 使用者講繁中、brand 官網繁中 → `"Traditional Chinese (Taiwan)"`；若 TA 中某組 ta_description 是英文 → 該 TA 推 `"English"`、其他推 `"Traditional Chinese (Taiwan)"`（canonical name、禁 ISO code）|
 | `primary_color` | `analyze_brand_url` 抓的 primary_color / logo 主色 | 抓到 `#2fa067` → 直接用；沒抓到 → 才問 |
 | `font_family` / `font_family_english` | `industry_category` 的通用字體偏好 | cosmetics / jewelry / luxury → `serif` / Noto Serif；software / electronics / SaaS → `sans-serif` / Inter；handmade / artisan → `handwritten`。中文英文兩欄位對齊、或都走 `"auto"` 交給 AI |
@@ -506,6 +506,39 @@ mcp_tool_call("landing_ai_mcp", "update_session", {
 #### Step 5b — 只問剩下真的推不出來的
 
 Infer pass 跑完、`needs` 通常從 7-8 題縮到 0-3 題。**剩下的才問使用者**、仍然 2-4 題一組。
+
+##### Step 5b.1 — `aspect_ratio` 切換腳本（使用者明示 / 反悔 / 雙比例）
+
+LLM 看到下面任何 cue 進入此分支、不要當成普通 infer 處理：
+
+| 使用者表達 | 情境 |
+|------------|------|
+| 「我要橫版」/「直拿那種」/「方版」/「IG portrait feed」/「16:9」/「1080×1920」 | A. 明示單一比例 |
+| 「兩個都要」/「直版橫版都做一份」/「9:16 跟 16:9 都生」 | B. 要兩個比例 |
+| Step 5c 宣告後 / Step 6 頁數中 / Step 7 pre-flight 才講「等等、我要改成 16:9」 | C. 反悔切換 |
+
+**情境 A — 明示單一比例**：
+```
+mcp_tool_call("landing_ai_mcp", "update_session", {
+  "user_token": token, "session_id": session_id,
+  "data_json": '{"wizard_shared_data": {"aspect_ratio": "<literal>"}}'
+})
+```
+- DB 寫 literal 字串（`"16:9"` / `"9:16"` / `"1:1"` / `"4:5"` 等）、對使用者說「直版/橫版/方版/IG portrait feed」
+- 屬 NO SILENT DEFAULTS Mode A（使用者親答）、Step 5c 仍要列、但**不標**「（我幫你配）」
+- 不需中斷 Wizard 流程、寫完接續
+
+**情境 B — 兩個比例（觸發兩-session 協定）**：
+1. **明示**扣費：「兩個比例需要分兩次扣點生成、總費用會是 2× — 確定兩個都要嗎？」
+2. 使用者明確 yes：跑下方 [Generating Multiple Aspect Ratios](#generating-multiple-aspect-ratios-one-ratio-per-session) 協定
+3. 使用者只想要一個（例：「不用、那選一個就好」）：問「你比較常用哪個渠道？」收斂到單一 ratio、走情境 A
+4. 使用者沒明確 yes（只說「都好」/「OK」之類模糊回應）：**禁止**自行 commit 雙 session、再問一次「2× 扣費、確定嗎？」
+
+**情境 C — 反悔切換（Step 5c / 6 / 7 中途）**：
+- 直接 update_session 覆寫即可。Wizard SOP「禁止顛倒」防的是**跳關**（例：跳過 Step 3 直接生）、**不防同 session 內 spec 微調**
+- 不需重跑 Step 1-4、TA 還在、其他 spec 還在、只改 aspect_ratio
+- 改完口頭確認新值（一句即可）、接續原本步驟（5c 重新宣告 / 6 繼續問頁數 / 7 重跑 pre-flight checklist）
+- 例外：若使用者反悔的是 Step 4 TA（非 spec）、那是 audience-target 領域、回 Step 4 重做
 
 #### Step 5c — 宣告推斷值、等使用者反對
 
@@ -1463,17 +1496,21 @@ mcp_tool_call("landing_ai_mcp", "export_html", {
 
 ---
 
-## Generating Both Aspect Ratios
+## Generating Multiple Aspect Ratios (one ratio per session)
 
-If user selected "both" in Phase 2:
+Backend generates **one ratio per session**. To deliver two ratios for the same brand, run **two separate sessions** in sequence:
 
-1. Generate 16:9 version first (steps 1-6)
-2. Create a second session with same config but `aspect_ratio="9:16"`
-3. Generate 9:16 version (steps 1-6)
-4. Present both results together
+1. Confirm with user explicitly: "兩個比例需要分兩次扣點生成、總費用會是 2× — 確定要兩個都跑嗎？"
+2. After explicit yes, generate the **first** ratio: `update_session(wizard_shared_data.aspect_ratio="16:9", ...)` then `generate_session` (steps 1-6 of this skill)
+3. Create a **second** session via `create_session` (new session_id) with the same brand / TA / spec, only difference is `aspect_ratio="9:16"` and run steps 1-6 again
+4. Present both campaign_ids together once both finish
+
+**Do NOT** put a list value (e.g. `["16:9", "9:16"]`) into `wizard_shared_data.aspect_ratio` — backend treats it as unknown and coerces back to `9:16`, silently dropping the 16:9 request. Always one single ratio string per session.
+
+Final report once both sessions finish:
 
 ```
-Both versions generated!
+Both ratios generated (2 sessions, 2× cost):
 
 16:9 (Landscape): [campaign_id_landscape] — [X] stripes
   Sales Page: https://landingai.info/{locale}/lp/{campaign_id_landscape}

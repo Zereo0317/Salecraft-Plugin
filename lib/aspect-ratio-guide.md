@@ -1,106 +1,103 @@
-# Aspect Ratio Guide — 16:9 vs 9:16
+# Aspect Ratio Guide
 
 ## Supported Ratios
 
-| Ratio | Name | Use Case | Best For |
-|-------|------|----------|----------|
-| **16:9** | Landscape | Desktop web, presentations, YouTube ads | Desktop-first websites, B2B |
-| **9:16** | Portrait | Mobile stories, TikTok, Instagram Reels | Mobile-first, social media, DTC |
+A session generates LPs at exactly **one** aspect ratio. The whole stripe set inherits that ratio. Allowed values:
 
-## Generation
+| Ratio | Name (Chinese in chat) | Pixel example | Use Case |
+|-------|------------------------|---------------|----------|
+| **9:16** | 直版（手機直拿）| 1080 × 1920 | IG Story / TikTok / Reels / mobile-first DTC |
+| **16:9** | 橫版（桌機寬）| 1920 × 1080 | Desktop hero / Google Ads / presentations / B2B |
+| **1:1** | 方版 | 1080 × 1080 | IG / FB feed square posts |
+| **4:5** | IG portrait feed | 1080 × 1350 | IG / FB tall feed posts (more screen real estate than 1:1) |
+| **4:3** | 橫版偏方 | 1600 × 1200 | Slide-deck style, classic 4:3 monitors |
+| **3:4** | 直版偏方 | 1200 × 1600 | Print portrait, magazine-style |
+| **3:2** | 橫版偏寬 | 1500 × 1000 | DSLR landscape photo feel |
+| **2:3** | 直版偏寬 | 1000 × 1500 | DSLR portrait photo feel |
+| **21:9** | 超寬橫版 | 2520 × 1080 | Cinematic banners, ultra-wide hero |
 
-Set aspect ratio in session configuration before triggering generation:
+`9:16` is the default when none is specified or an unknown value is sent.
+
+## Setting It on a Session
+
+Aspect ratio lives on `wizard_shared_data.aspect_ratio` (single string). It must be written **before** `generate_session` fires — set during Step 5 of the Wizard 6-step.
 
 ```
-update_session(user_token, session_id, aspect_ratio="16:9")
-# OR
-update_session(user_token, session_id, aspect_ratio="9:16")
+mcp_tool_call("landing_ai_mcp", "update_session", {
+  "user_token": token,
+  "session_id": session_id,
+  "data_json": json_dumps({
+    "wizard_shared_data": {"aspect_ratio": "16:9"}
+  })
+})
 ```
 
-For **both** ratios: create two separate sessions with the same brand/TA config.
+Then trigger generation:
 
-## Homepage Embedding — CSS
-
-### 16:9 (Landscape) Embedding
-
-```css
-.lp-embed[data-ratio="16:9"] {
-  aspect-ratio: 16 / 9;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* Mobile: stack naturally */
-@media (max-width: 768px) {
-  .lp-embed[data-ratio="16:9"] {
-    aspect-ratio: auto;
-    width: 100%;
-  }
-}
+```
+mcp_tool_call("landing_ai_mcp", "generate_session", {
+  "user_token": token,
+  "session_id": session_id,
+  "ta_group_ids_json": json_dumps([...]),
+  "requested_stripe_count": 8
+})
 ```
 
-**Desktop**: Full-width hero sections, side-by-side content blocks.
-**Mobile**: Stacks vertically, maintains readability.
+## Two Ratios for the Same Brand → Two Sessions
 
-### 9:16 (Portrait) Embedding
+Backend generates **one ratio per session**. Sending a list (`["16:9","9:16"]`) or `"both"` is silently coerced back to `9:16`. To deliver two ratios:
 
-```css
-.lp-embed[data-ratio="9:16"] {
-  aspect-ratio: 9 / 16;
-  max-width: 480px;
-  margin: 0 auto;
-}
+1. Confirm with user: "兩個比例需要分兩次扣點生成、總費用會是 2× — 確定嗎？"
+2. Run session #1 with `aspect_ratio="16:9"` (full Wizard 6-step)
+3. `create_session` again, copy brand / TA / spec, only `aspect_ratio="9:16"` differs
+4. Run session #2
+5. Report both campaign URLs together when both finish
 
-/* Mobile: full width, natural scroll */
-@media (max-width: 768px) {
-  .lp-embed[data-ratio="9:16"] {
-    aspect-ratio: auto;
-    width: 100%;
-    max-width: 100%;
-  }
-}
-```
+(Same pattern as different `requested_stripe_count` for different TAs — backend can't fan out.)
 
-**Desktop**: Centered column with max-width 480px, flanking elements optional.
-**Mobile**: Full-width, natural vertical scroll (native feel).
+## Inferring From Conversation
 
-### Adaptive Container (Auto-Detect)
+| User signal | Infer |
+|-------------|-------|
+| "IG 限時 / TikTok / Reels / Shorts" | `9:16` |
+| "桌機官網 / Google Ads / 簡報 / YouTube ad" | `16:9` |
+| "IG 方版貼文 / FB 方版貼文 / Meta feed square" | `1:1` |
+| "IG 動態消息直拿 / FB feed portrait / 4:5 廣告" | `4:5` |
+| (none of the above) | `9:16` (broadest reach) |
 
-```css
-.lp-embed-container {
-  container-type: inline-size;
-  width: 100%;
-}
+When inferred, **announce** the choice and the reason on Step 5c so the user can override (per CLAUDE.md Rule 6.5 NO SILENT DEFAULTS).
 
-/* Use container queries for fine-grained control */
-@container (min-width: 769px) {
-  .lp-embed[data-ratio="9:16"] {
-    max-width: 480px;
-    margin: 0 auto;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-}
-```
+## Speaking Ratios to the User
 
-## Image Export Sizes
+Per CLAUDE.md L307 (零術語 rule): never write the bare numeric ratio to the user. Always pair with a Chinese descriptor:
 
-| Ratio | Export Width | Export Height | Format |
-|-------|-------------|---------------|--------|
-| 16:9 | 1920px | 1080px | WebP/PNG |
-| 9:16 | 1080px | 1920px | WebP/PNG |
+- ❌ "比例選 9:16 可以嗎？"
+- ✅ "用直版（手機直拿、IG Story 那種尺寸）可以嗎？"
 
-Stripe images are exported per-stripe via `get_export_image_url(user_token, campaign_id, stripe_idx)`.
+DB always stores the literal string (`"9:16"` etc.) — the rule is for chat output only.
 
-## Ad Creative Sizing
+## Image Export Sizes (post-gen)
 
-| Platform | Required Ratio | Size |
-|----------|---------------|------|
-| Meta Feed | 1:1 | 1080×1080 |
-| Meta Stories | 9:16 | 1080×1920 |
-| Google Display | Various | Responsive |
-| TikTok Feed | 9:16 | 1080×1920 |
+Each per-stripe image inherits the session's aspect ratio. Approximate exported pixel sizes (Gemini Image API "2K" target):
 
-The `generate_ad` tool automatically adapts LP content to platform-specific ratios.
+| Ratio | Approximate per-stripe pixels |
+|-------|-------------------------------|
+| 9:16 | 1536 × 2752 |
+| 16:9 | 2752 × 1536 |
+| 1:1  | 2048 × 2048 |
+| 4:5  | 1856 × 2320 |
+
+Stripe images are downloaded via `download_stripe(campaign_id, stripe_idx)` (free) or via the assembled LP image at `Project.result_image_url`.
+
+## Ad Creative Sizing (separate from LP)
+
+`generate_ad` and `generate_carousel` are independent tools that take their own `aspect_ratio` parameter (only `9:16` / `4:5` / `1:1` are valid for ads — see [`mcp-patterns.md`](./mcp-patterns.md) "Ad Campaign Creation"). LP aspect_ratio does **not** control ad output.
+
+| Platform | Required Ad Ratio | Size |
+|----------|-------------------|------|
+| Meta Feed (IG / FB post) | `1:1` | 1080×1080 |
+| Meta / IG Stories / Reels | `9:16` | 1080×1920 |
+| IG portrait feed | `4:5` | 1080×1350 |
+| TikTok Feed | `9:16` | 1080×1920 |
+
+The `generate_ad` tool re-renders LP content for the chosen platform ratio independently of the underlying LP aspect_ratio.

@@ -120,8 +120,8 @@ Phase 10: Growth Retrospective [growth-retro]
 **Steps**:
 1. Generate TA options: `generate_ta_options(user_token, brand_name, description, industry_category, ...)` → 3-5 AI-suggested audiences
 2. User selects TAs (can customize or add their own)
-3. Select aspect ratio: 16:9 (landscape), 9:16 (portrait), or both
-4. Calculate page count: `pages = TAs × aspect_ratios × locales`
+3. Select **one** aspect ratio for the whole LP: 9:16 (portrait) / 16:9 (landscape) / 1:1 (square IG/FB post) / 4:5 (IG feed portrait) / or any other ratio in the allowed list. **Two ratios for the same brand = two separate sessions** (backend one ratio per session).
+4. Calculate page count: `pages = TAs × locales`   // aspect_ratio is shared across the session, not multiplied
 5. Check balance: `get_me(user_token)` → remaining credits
 6. Estimate cost: pages × per_page_credit_cost
 7. Present summary and confirm with user
