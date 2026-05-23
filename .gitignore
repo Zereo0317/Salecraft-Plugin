@@ -14,3 +14,16 @@ output/
 # Internal test artifacts (contain credentials and PII)
 TEST_PLAN.md
 TEST_RESULTS.md
+
+# Certificates and key files
+*.pem
+*.key
+*.p12
+*.pfx
+
+# GCP credentials
+service-account*.json
+credentials*.json
+*.secret
+config.local.*
+*.bak
