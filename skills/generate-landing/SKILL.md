@@ -607,7 +607,7 @@ Step 5a/5b 跑完、進 Step 6 頁數之前，把 **whitelist 內全部欄位一
 
 問法：**用人話、給選項、不要一次丟太多**。**絕對不要照 gate 編號 1-12 念給使用者聽**——那是內部 audit list。使用 **conversational scaffolding**：不是裸問題，而是帶著推薦和理由的對話。
 
-問的範例（使用者只缺 aspect / language / cta）：
+問的範例（使用者只缺 aspect / language）：
 
 ```
 快到了，再確認 2 個小設定就開工：

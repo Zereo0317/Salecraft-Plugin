@@ -28,9 +28,9 @@ Show users they're already partway done before they start. When onboarding begin
 > 「你已經有了產品——這就完成了 20%！接下來我幫你把品牌資料補齊，每補一項都離完美 LP 更近一步。」
 
 After each piece of data is collected, update the progress:
-> 「品牌資料完成度：45% → 60%！剛才加的產品圖讓 LP 品質直接升了一個檔次。」
+> 「品牌資料完成度：40% → 60%！剛才加的產品圖讓 LP 品質直接升了一個檔次。」
 
-Use these milestones: 20% (has product) → 40% (URL scraped) → 55% (brand info confirmed) → 70% (assets uploaded) → 85% (spokesperson chosen) → 95% (quality gate passed) → 100% (ready for TA selection).
+Use these milestones: 20% (has product) → 40% (URL scraped) → 60% (brand info confirmed) → 70% (assets confirmed) → 80% (audience confirmed) → 85% (spokesperson chosen) → 95% (quality gate passed) → 100% (ready for TA selection).
 
 ### IKEA Effect — Let Users Feel Ownership
 Show the brand profile building up in real time. After each batch of data, show a visual "brand card" that grows:
@@ -877,10 +877,6 @@ Response shape:
 使用者選既有代言人 → update_session 寫 `wizard_shared_data.selected_spokesperson_id` = 那個 id，跳過下方三選一。
 
 **If empty OR user rejects all**: 往下跑三選一對話。
-
-### You MUST proactively explain this with FULL clarity
-
-Most users don't realize the AI will GENERATE a realistic human image. Be explicit about what happens with each option. Example dialogue (zh-TW):
 
 ### You MUST proactively explain this with FULL clarity
 
