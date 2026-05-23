@@ -18,6 +18,15 @@ allowed-tools:
 
 # Landing Page Generation — AI Pipeline Orchestration
 
+## 🧠 UX Psychology Principles for This Skill
+
+- **Paradox of Choice (TA selection)**: When presenting TA options, always lead with the recommended one (anchoring). Don't present 4-6 options as equally valid — highlight the best fit and explain why. Users who get a recommendation convert 3x better than those who face a blank choice.
+- **Anchoring (specs)**: Frame conversations around value, not cost. "10 pages gives you enough room to tell your brand story properly" > "10 pages costs 2,000 pts."
+- **Contextual tips**: At every decision point, offer 1 industry-specific insight marked with 💡. This demonstrates expertise and helps users make better decisions.
+- **Celebrate milestones**: Generation trigger is a big moment. Frame it with excitement, not as a transaction.
+- **Loss aversion (missing assets)**: When assets are missing, frame what the user will lose in quality, not what they "can skip."
+- **Empathize on errors/waits**: Generation takes time. Keep the user engaged and reassured. If something fails, lead with empathy before solutions.
+
 ## 🚨 STOP — READ THIS FIRST
 
 **This skill EXECUTES via API. It does NOT write a strategy text.**
@@ -196,25 +205,24 @@ mcp_tool_call("landing_ai_mcp", "get_session", {
 
 ### 若四個桶**全空**（純文字敘述）
 
-**必須停下來問**，即使使用者已經說「你直接跑就好」：
+**必須停下來問**，即使使用者已經說「你直接跑就好」。**Use loss aversion framing** — show what they'll lose, not just what's missing:
 
-> 「先打住——我掃了你的 session 資料，**四個素材桶（產品圖 / logo / 代言人 / 認證）全部都沒有實際圖片，全是文字敘述**。
+> 「先打住——我檢查了你的素材庫，發現四個關鍵區域都還沒有實際圖片。
 >
-> 這代表 AI 會自己想像：
->   - **產品樣子**（可能跟實品差很遠，之後截圖給客戶一看就露餡）
->   - **Logo**（AI 瞎編一個，跟你真實品牌識別完全無關）
->   - **代言人**（AI 生一張虛擬臉，不能用在真實行銷、還有法律風險）
->   - **認證 / 檢驗圖**（沒提供就不會出現任何認證 badge，信任感下降）
+> 這會讓你的 LP **損失什麼**：
+>   - 📸 **沒有產品實拍** → 轉換率平均掉 40%。AI 會想像產品樣子，但客戶一看就知道不是真的
+>   - 🏷️ **沒有 Logo** → 品牌識別度歸零。AI 編的 Logo 跟你的品牌風格通常差很遠
+>   - 👤 **沒有代言人照片** → 少了信任感的核心。研究顯示有真人的 LP 停留時間多 60%
+>   - 🏅 **沒有認證圖** → 信任徽章直接消失。尤其保健 / 美妝 / 食品產業，這是成交臨門一腳
 >
-> 你手邊有以下任何一項嗎？
->   1. 產品實拍（手機隨便拍都可以）
->   2. 品牌 logo 圖檔
->   3. 代言人照片
->   4. 認證 / 專利 / 檢驗報告
->   5. 公司/產品網站連結（我可以自動抓）
->   6. Google Drive 連結（可批次匯入）
+> 好消息是，補素材很快：
+>   1. 📱 手機隨手拍一張產品（30 秒）
+>   2. 📎 給我一個網址，我自動抓（30 秒）
+>   3. ☁️ 丟一個 Google Drive 連結（批次匯入）
 >
-> 如果真的都沒有、就是要跑 **AI 想像版**——OK，但我需要你明確回『我知道這是 AI 想像版，還是要跑』才會繼續。」
+> 只要補**任何一張真實圖片**，LP 品質就會明顯不同。
+>
+> 如果真的都沒有、要跑 AI 想像版也可以——但我需要你明確說『我知道品質會打折，還是要跑』。」
 
 **除非下列任一成立，否則不准進 Phase 2.9**：
 - 至少有 1 張真實圖片進入任一桶，或
@@ -222,9 +230,15 @@ mcp_tool_call("landing_ai_mcp", "get_session", {
 
 ### 若部分有、部分空
 
-不要只問「確認沒有 logo 喔？」——**針對空的桶逐個問**：
+不要只問「確認沒有 logo 喔？」——**針對空的桶逐個問，先肯定有的、再指出缺的**：
 
-> 「我看到你有產品圖（很好），但沒有 logo / 代言人 / 認證。這幾項是打算 AI 生，還是你手邊有可以傳給我？」
+> 「有產品圖，很棒——這是 LP 最重要的素材，你已經贏在起跑點了！
+>
+> 不過還有幾項如果補上，效果會好很多：
+> - {列出空的桶，每個都用 loss aversion 框架}
+> - {例如：「Logo 沒有的話，AI 會自己編——跟你品牌風格通常差很遠。手邊有嗎？」}
+>
+> 每一項你可以自己傳、或讓 AI 生成。告訴我怎麼處理？」
 
 等使用者對每個缺的桶做出明確選擇（自備 or AI 生），再進 Phase 2.9。
 
@@ -591,22 +605,22 @@ Step 5a/5b 跑完、進 Step 6 頁數之前，把 **whitelist 內全部欄位一
 
 ### Step 5 原則：**讓使用者只需要點頭或否決、不要從空白答每題**
 
-問法：**用人話、給選項、不要一次丟太多**。**絕對不要照 gate 編號 1-12 念給使用者聽**——那是內部 audit list。
+問法：**用人話、給選項、不要一次丟太多**。**絕對不要照 gate 編號 1-12 念給使用者聽**——那是內部 audit list。使用 **conversational scaffolding**：不是裸問題，而是帶著推薦和理由的對話。
 
 問的範例（使用者只缺 aspect / language / cta）：
 
 ```
-再三題就開工：
+快到了，再確認 2 個小設定就開工：
 
-1. LP 主要在哪裡看？
-   ① 手機直版（9:16，IG 限時 / TikTok 適合）
-   ② 桌機橫版（16:9，官網 / Google Ads 適合）
-   ③ 兩邊都要（預設）
+1. LP 主要給誰看？在哪裡看？
+   → 我推薦**手機直版**（9:16）——現在超過 80% 的人用手機看 LP
+   {如果使用者提過 IG / TikTok：💡 你有提到 IG，直版是最佳選擇。}
+   {如果使用者是 B2B：💡 B2B 客戶常在桌機看，橫版（16:9）可能更適合你。}
+   要改成其他比例直接講。
 
-2. 主要語言？（給當下推薦的 2-3 個，不要列全部 15 個）
-
-3. 最下面的行動按鈕要連去哪？
-   ① 官網 ② 購買頁 ③ LINE ④ 預約頁 ⑤ 先不填
+2. LP 語言？
+   → 根據你的品牌，我推薦 [推薦語言]。
+   {提供 2-3 個最相關的選項，不要列 8 個讓使用者選擇困難。}
 ```
 
 若 `needs` 某項 session 早已寫過（例：brand-onboard 爬官網時 `primary_color` 已抓到）→ **不要重問**。讀到什麼、略過什麼。
@@ -649,15 +663,25 @@ assert shared.get("aspect_ratio") == "16:9", f"❌ aspect_ratio 寫入失敗: go
 
 前面 spec 都到位才問頁數。頁數一答完 → `update_session` 寫 `requested_stripe_count` → 立刻算 cost → 進 Cost 複誦。
 
-```
-最後一題——**頁數**。
-每頁 200 pts，配合你內容量：
-• 8 頁（1,600 pts）：活動頁 / 單品促銷
-• 10 頁（2,000 pts）：一般品牌首發（預設）
-• 12-14 頁（2,400-2,800 pts）：複雜體驗 / 多面向
-• 16-21 頁（3,200-4,200 pts）：完整品牌史 / 多產品線
+**🧠 UX Note**: This is the biggest commitment so far (it determines cost). By this point the user has said "yes" 6-8 times through the flow, so commitment momentum is high. Frame the choice around their content richness (what they already provided), not around cost. Use contextual tips based on their industry.
 
-你內容量大概多少？
+```
+快到了！最後一題——**你的 LP 要幾頁**。
+
+💡 根據你提供的素材量，我的建議：
+{根據 session 裡的素材量動態推薦，例如：}
+{素材少（< 5 張圖 + 短描述）→ 「你的素材適合 8-10 頁，精簡有力。」}
+{素材中等 → 「你有不少好素材，10-12 頁可以完整展現。」}
+{素材豐富（> 10 張圖 + 認證 + 完整故事）→ 「你的素材很豐富！12-14 頁才能完整發揮。」}
+
+{再根據產業給 contextual tip，例如：}
+{保養品/美妝 → 「💡 保養品牌最常選 10-12 頁——要有空間說成分故事 + 使用前後對比。」}
+{餐廳 → 「💡 餐飲品牌通常 10-12 頁效果最好——菜色、空間、主廚故事各需要 2-3 頁。」}
+{保健食品 → 「💡 保健食品需要建立信任，12-14 頁放得下認證 + 成分解說 + 使用見證。」}
+{軟體/SaaS → 「💡 軟體產品 8-10 頁就夠——功能展示 + 定價 + CTA 不需要長篇大論。」}
+{一般 → 「💡 一般品牌首發建議 10 頁，之後可以隨時加頁。」}
+
+每頁 200 pts，範圍 8-21 頁任選。你要幾頁？
 ```
 
 ### ⚠️ 絕對不准做的事
@@ -911,8 +935,22 @@ LLM: (silent tools)
   ✅ validate_images（如果 session 有產品圖）+ digitize_product_text
   ✅ Infer pass（CLAUDE.md #6.5）：aspect/color/font 從對話 + brand-scrape signal 推；language 明確問；cta silent default；qa/testimonials 不列（post-gen）
     ↓
-互動 1（使用者看 TA 候選、挑組）：
-  「AI 切了 4 組 TA：[列 4 個]。你要挑 1 組生、還是挑 2 組各生一份？」
+互動 1（使用者看 TA 候選、挑組——**先推薦、再列全部**）：
+  「AI 分析完你的品牌，切了 [N] 組潛在受眾。
+   其中**最推薦**的是：
+   ⭐ [最高 appeal 的 TA name] — [一句話描述 + 為什麼推薦]
+   
+   其他候選：
+   - [TA 2] — [一句話]
+   - [TA 3] — [一句話]
+   - [TA 4] — [一句話]
+   
+   你可以挑 1 組先試、或挑 2-3 組各生一份（每組獨立扣點）。推薦先用 ⭐ 那組試水溫。」
+
+  **🧠 UX Note — Paradox of Choice + Anchoring**: Always lead with the recommended TA (anchoring).
+  Presenting a default recommendation reduces decision paralysis. The user can always override,
+  but most will go with the recommendation — which is fine because the AI picked it based on
+  brand-audience fit data. Avoid listing all TAs as equal options with no guidance.
 
 互動 2（Cost 複誦 + 推斷值一起給使用者反對機會）：
   「依你講的、我把規格都填好了：
@@ -1028,18 +1066,24 @@ tas    = session["wizard_ta_groups"] or []
 
 ### Step 1: Set expectations BEFORE triggering
 
-**MANDATORY** — Always tell the user what to expect before starting generation:
+**MANDATORY** — Always tell the user what to expect before starting generation. Use celebratory language — they've made it through the entire setup process, this is the exciting part:
 
 ```
-This process takes about 1-3 minutes. The AI pipeline has 4 stages:
+{adapt to user's language, zh-TW example:}
 
-1. Strategy — Analyzing your brand and audience positioning
-2. Layout — Designing page structure and writing copy
-3. Image Generation — Creating visual stripes with embedded text
-4. Quality Check — Verifying readability and brand consistency
+太好了，所有準備工作都完成了！接下來就是見證奇蹟的時刻 ✨
 
-I'll keep you updated on progress as each stage completes.
+AI 正在幫你打造 LP，大約 1-3 分鐘，分 4 個階段：
+
+1. 策略分析 — 分析你的品牌定位和受眾心理
+2. 版面設計 — 設計頁面結構、撰寫文案
+3. 視覺生成 — 把文字和圖片做成精美的頁面
+4. 品質檢查 — 確認可讀性和品牌一致性
+
+每個階段完成我都會跟你說。等不及要看成品了吧！
 ```
+
+**🧠 UX Note**: Celebrate the milestone! The user has invested significant time and effort. Excitement about the result reinforces that their investment was worthwhile (IKEA effect). If generation fails, empathize first: "遇到一點狀況，我正在處理——你的資料都安全存著，不用擔心。" Never cold-report errors.
 
 ### Step 2: Trigger the pipeline
 
