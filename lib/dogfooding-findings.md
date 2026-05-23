@@ -67,7 +67,7 @@ Or mount a service-account JSON via Secret Manager and use `from_service_account
 
 **Reproduce** (any non-TW targeting now triggers it):
 ```
-POST https://zereo-backend-s6ykq3ylca-de.a.run.app/social/ads/campaigns
+POST https://<backend-url>/social/ads/campaigns
 { "social_account_id": "<IG account>", "campaign_objective": "OUTCOME_TRAFFIC",
   "ad_type": "image", "creative_image_url": "<direct CDN>", "daily_budget": 5.0,
   "target_countries": ["US"], "placements": ["facebook","instagram"] }
@@ -117,7 +117,7 @@ Should wrap into `{"targets": body}` before forwarding.
 
 **Symptom**: `list_accounts` returned a FB Page record with `can_publish: false`, `account_capability.tasks: []`, `page_name: ""`. Plugin AI was telling users "you can't publish — go grant page admin role". But empirical test (2026-04-25): direct `POST /social/publish/` with `post_type: fb_post` to that account **succeeds** and the post appears live on the FB Page.
 
-**Reproduce**: test1@test.com FB Page (`ebbe1141-711e-453e-9df9-98e753cd0445`), `can_publish: false` in `list_accounts` → `fb_post` published successfully (https://www.facebook.com/1033284159870001/posts/122110661588983939).
+**Reproduce**: <redacted-email> FB Page (`<redacted-uuid>`), `can_publish: false` in `list_accounts` → `fb_post` published successfully (https://www.facebook.com/<redacted>).
 
 **Root cause hypothesis**: `account_capability` is populated by a separate `recheck_capability` flow that probes which Meta Graph API tasks the page token can perform — but this probe seems to be either (a) using a different/stale token, or (b) checking a stricter scope than what's actually needed for `pages_manage_posts`. Page token used in actual publish has sufficient scope.
 
@@ -225,7 +225,7 @@ generate_ad.platform drift.** The audit script
 is reusable — re-run on every schema change or new MCP tool.
 
 ### #39 — Meta orphan campaigns accumulated in test ad account ⚪ accepted / won't-clean
-Pre-extra=forbid cascade left ~11 orphan campaigns in the test1
+Pre-extra=forbid cascade left ~11 orphan campaigns in the <redacted-email>
 Meta Ads account (status=PAUSED, $0 spend). With #36 landed, no new
 orphans accumulate. User decision 2026-04-19: do not run the
 cleanup script — the orphans don't affect billing, just UI clutter
@@ -252,7 +252,7 @@ Root cause: `SessionTAGroup.deducted_amount` stores the
 after stripe_adjustment refund**. A snapshot taken before the
 Factory pipeline finished will always show the pre-charge.
 
-Verified via transaction log for test1@test.com:
+Verified via transaction log for <redacted-email>:
 - 18:43:11 pre-deduct: -2000 (10 stripes × 200)
 - 18:50:27 stripe_adjustment: +200 (9 actual vs 10 requested)
 - **net: 1800 = 9 × 200** ← Option A (「多生成無償、少生成補償」) working as designed.
@@ -396,7 +396,7 @@ Reported by Claude.ai but turned out to be wrong diagnosis: A站 and B站
 share the same Cloud SQL DB and same JWT `SECRET_KEY` (both via
 GCP Secret Manager). Tokens issued from either side validate on either
 side identically. The only difference users see is the URL hash format
-in Cloud Run URLs (`s6ykq3ylca-de` vs `876464738390` — both route to
+in Cloud Run URLs (`<redacted-hash>` vs `<project-number>` — both route to
 the same service). No real environment-isolation issue exists.
 
 ### #5 — `list_pricing_plans` requires `user_token` 🟠 open (backend)
@@ -488,7 +488,7 @@ doesn't call DELETE on the orphan Meta campaign — and no
 `cleanup_failed_campaigns` endpoint exists.
 
 In dogfooding 2026-04-18, ~10 orphan campaigns had piled up in
-test1's ad account (`act_642463704665856`) since 2026-03-25.
+<redacted-email>'s ad account (`act_<redacted>`) since 2026-03-25.
 They don't spend money (no AdSet = no impressions) but pollute
 the user's Meta Ads Manager UI.
 

@@ -363,7 +363,7 @@ SKILL.md 提到的「Strategist / Architect / Factory / Stripe Reflector」**是
 ✅ 完全不提
 
 #### 9. 內部 URL
-❌ 任何 `*.run.app`、`marketing-backend-v2-...`、`s6ykq3ylca-de.a.run.app`、含 `876464738390` 的 URL、`landing-ai.com` 舊信箱
+❌ 任何 `*.run.app`、`marketing-backend-v2-...`、`s6ykq3ylca-de.a.run.app`、含 `<project-number>` 的 URL、`landing-ai.com` 舊信箱
 ✅ 只給 `salecraft.ai` / `landingai.info` / `github.com/connactai/Salecraft-Plugin`
 
 #### 10. 素材 vs 產出（中文是相反詞、混用會困惑）
@@ -738,7 +738,7 @@ edit-landing（使用者要改再進）
 | العربية | `ar` | |
 | 簡體 / 無法判斷 | `en`（預設、未支援簡中） | |
 
-**❌ 絕對禁止**：`*.run.app` / `marketing-backend-v2-...` / `landing-ai.com` / `support@landing-ai.com` / 含 `876464738390` 的 URL / 舊 `landing-page?id=...` 格式（給使用者一律用 `/lp/<id>`、舊格式雖會 308 redirect 但不主動推）
+**❌ 絕對禁止**：`*.run.app` / `marketing-backend-v2-...` / `landing-ai.com` / `<deprecated-email>` / 含 `<project-number>` 的 URL / 舊 `landing-page?id=...` 格式（給使用者一律用 `/lp/<id>`、舊格式雖會 308 redirect 但不主動推）
 
 **LP 渲染 URL 可顯示**：`landingai.info/{locale}/lp/{campaign_id}`（使用者要分享的銷售頁）。
 
@@ -820,6 +820,7 @@ PAID 不是升級版。PAID 只是執行工具。
 | `careful-publish` | 高風險內容上線前 final gate |
 | `journey-qa` | E2E 顧客旅程測試 |
 | `campaign-ship` | 上線 checklist、版本驗證、監控計畫 |
+| `social-growth-strategist` | IG/TikTok 演算法解析、內容策略、發文時間、格式選擇、成長藍圖——基於平台真實數據的社群成長顧問。Trigger:「IG 怎麼經營」「TikTok 演算法」「幾點發文」「內容比例」「怎麼漲粉」 |
 
 ### 💰 Package + Attract（執行、付費）
 
@@ -1083,6 +1084,9 @@ https://landingai.info/{locale}/lp/{campaign_id}
 | 想測體驗 | `journey-qa` |
 | 想要 SOP / 文件 | `document-release` |
 | 跨頁價格不一致 | `guard-offer` |
+| IG/TikTok 成長、演算法、發文時間、內容策略 | `social-growth-strategist` |
+| 想知道該發什麼內容、幾點發、用什麼格式 | `social-growth-strategist` |
+| 問 Reels / 短影音 / carousel 怎麼做 | `social-growth-strategist` |
 | 問 SEO / 被 Google 找到 / AI 搜尋 | `seo-geo-aeo` |
 | 問說服力 / 文案心理學 / 怎麼讓客人相信 | `prism-influence` |
 | 問認知偏誤 / 消費者心理 / 行為設計 | `cognitive-behavioral` |

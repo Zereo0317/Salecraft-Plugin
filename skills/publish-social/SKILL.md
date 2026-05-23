@@ -459,29 +459,32 @@ If validation fails: report issues and suggest fixes (resize, reformat).
 
 ## Phase 4: Compose Posts
 
-Help user craft platform-specific captions:
+### Platform Algorithm-Aware Captioning
 
-```
-Suggested captions:
+Craft captions optimized for each platform's ranking signals:
 
-📘 Facebook:
-"Discover [product] — designed for [TA]. [Value proposition]. 
-Learn more: [landing_page_url] #[hashtag1] #[hashtag2]"
+**Instagram caption structure** (DM sends = #1 growth signal):
+- Line 1: Hook — stop the scroll (first 125 chars visible before "See More")
+- Lines 2-3: Story or scenario expansion
+- Lines 4-5: Introduce product/solution
+- Lines 6-7: Bullet benefits (use ✅ or ✓)
+- Line 8: Social proof (numbers, stats)
+- Line 9: Shareable CTA + DM trigger ("tag someone who needs this" or "DM me [keyword]")
+- Line 10: 3-5 hashtags (mix broad + niche + branded)
+- End with a question to boost comments (comments = 4th ranked signal)
 
-📸 Instagram:
-"✨ [Short hook]
-[Key benefit 1]
-[Key benefit 2]
-[CTA] — Link in bio!
-.
-.
-#[hashtag1] #[hashtag2] ... #[hashtag10]"
+**TikTok caption structure** (search SEO + engagement):
+- Front-load primary keyword in first 150 characters (TikTok indexes captions for search)
+- Keep under 300 characters for optimal display
+- 3-5 hashtags: 1 broad (#fyp) + 2-3 vertical + 1 niche
+- Avoid pure emoji captions — text is indexed for search ranking
 
-🎵 TikTok:
-"[Trend-aware hook] #[hashtag] #fyp"
+**Hashtag strategy**:
+- Instagram: 5-10 niche-specific hashtags (not 30 generic ones)
+- TikTok: 3-5 hashtags, keywords > popularity (search-driven)
+- Bilingual accounts: BOTH languages on every post (English for global + 繁體中文 for Taiwan)
 
-Edit any caption, or approve all?
-```
+**Never use the same caption across platforms** — each platform's algorithm ranks content differently.
 
 ## Phase 5: Schedule or Publish Now
 
