@@ -189,9 +189,14 @@ Returns:
 - `total_paid_prompts`, `total_explicit_memorize`
 - `last_active_at`
 
-Use this to greet by referencing their portfolio:
-> 「歡迎回來！你目前在 SaleCraft 上有 5 個 Project，最常經營的是
->  「玫瑰肌膚實驗室」(美妝)。今天要繼續這個、還是新的 Project？」
+Use this to greet by referencing their portfolio — **make the returning user feel recognized and valued** (social proof + reciprocity):
+> 「歡迎回來！你目前在 SaleCraft 上經營 5 個品牌，其中「玫瑰肌膚實驗室」
+>  表現最活躍。今天要繼續這個、還是有新的品牌要經營？」
+
+**🧠 UX Note**: Returning users are your most valuable users. The greeting should:
+1. **Show you remember them** (reciprocity — you gave value, they feel recognized)
+2. **Reference their progress** (endowed progress — they've already invested, keep going)
+3. **Suggest a next step** (reduce decision fatigue — don't just ask "what do you want to do")
 
 **Once they pick a Project (brand_id)**:
 ```
@@ -207,10 +212,13 @@ Returns full brand-scoped recall PLUS the user-level preferences in one shot:
 - `metadata` — latest snapshot (engagement_score, user_stage, PLTV, etc.)
 - `user_preferences` — same shape as `/preferences` above
 
-Use this context to greet:
-> 「歡迎回來！上次我們做了你的玫瑰花瓣面霜的 LP（8 頁、$53）。你已經
->  上傳了 3 張產品圖和品牌 Logo。建議的下一步是做漏斗設計，要繼續嗎？
->  還是有新的需求？」
+Use this context to greet with **specific, personalized value** — not a generic welcome:
+> 「歡迎回來！上次我們幫你的玫瑰花瓣面霜做了 8 頁 LP。
+>  你已經有 3 張產品圖和品牌 Logo——比大多數品牌起步時準備得更充分。
+>
+>  💡 根據你目前的進度，下一步最有效的是做漏斗設計——
+>  這能讓你的 LP 不只是被看到，還能把訪客變成客戶。
+>  要繼續嗎？還是今天有別的需求？」
 
 **This is non-negotiable**. Skipping `/context` = treating every session
 as a brand-new user = the WHOLE point of this skill is defeated.

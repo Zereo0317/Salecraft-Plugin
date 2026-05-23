@@ -1,0 +1,13 @@
+{
+  "_comment": "SaleCraft MCP server connections. Accessed via Service System Deep Research connector proxy (mcp_tool_call), not hosted directly by this plugin. URLs are resolved at runtime via the connector — see lib/mcp-patterns.md for routing details.",
+  "landing_ai_mcp": {
+    "type": "http",
+    "url": "${SALECRAFT_BACKEND_URL}",
+    "description": "Landing page generation, brand management, content tools, reels, and ad generation"
+  },
+  "zereo_social_mcp": {
+    "type": "http",
+    "url": "${ZEREO_BACKEND_URL}",
+    "description": "Social media publishing (Meta/TikTok), ad campaigns, influencer matching, and QR codes"
+  }
+}

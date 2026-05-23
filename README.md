@@ -23,7 +23,7 @@ SaleCraft works on **any AI platform** — ChatGPT, Claude, Gemini, Kimi, GLM, O
 ## Who It's For
 
 | Perfect Fit | Not For |
-|-------------|---------|
+|-------------|--------|
 | Physical products (skincare, food, fashion...) | Software / SaaS |
 | Single product or product line | Multi-purpose platforms |
 | E-commerce, retail, F&B, beauty, health | B2B consulting |
@@ -77,12 +77,12 @@ This works on any AI platform that supports MCP connections.
    - Bind your **Google account** — enables AI to access your Google Drive assets
 3. Copy your AI Login Token and paste it to the AI assistant
 
-## Skills (26)
+## Skills (35)
 
 ### Free — No Account Needed (AI Consultation)
 
 | Skill | What It Does |
-|-------|-------------|
+|-------|-----------|
 | **saleskit** | Free marketing consultation — diagnose needs, recommend strategy |
 | **research-market** | Market research, competitor analysis, trend scanning |
 | **plan-cgo-review** | Growth strategy — expand, focus, or reduce? |
@@ -103,7 +103,7 @@ This works on any AI platform that supports MCP connections.
 ### Paid — Account Required (AI Generation + Publishing)
 
 | Skill | What It Does | Cost (pts) |
-|-------|-------------|------------|
+|-------|-----------|-----------|
 | **brand-onboard** | Brand profile, asset check, gap analysis | FREE (uploads + analyses use free account quota) |
 | **audience-target** | AI target audience suggestions + spokesperson selection | FREE (runs on free quota) |
 | **generate-landing** | AI Landing Page (multi-stage generation) | 200/page × TAs (e.g. 8-page 1 TA = 1,600) |
@@ -113,22 +113,51 @@ This works on any AI platform that supports MCP connections.
 | **publish-ads** | Meta/Google ad campaigns | depends on creative (200 for single ad; carousel 300 + 100×N) |
 | **generate-reels** | AI short video generation | 100/sec (5-60 sec range) |
 
+### Knowledge & Strategy Skills (v0.3.0)
+
+| Skill | Purpose |
+|-------|---------|
+| `seo-geo-aeo` | Search, generative, and answer engine optimization strategies |
+| `prism-influence` | PRISM psychological influence and strategic communication framework |
+| `cognitive-behavioral` | Cognitive biases, persuasion principles, and behavioral profiling |
+| `content-sensory-engineering` | Message design from profiling to copy optimization |
+| `social-theory-power` | Power dynamics, cultural capital, and brand positioning theory |
+| `media-algorithms` | Platform algorithm optimization and GEO strategy |
+| `marketing-growth-engine` | Growth frameworks, unit economics, and scaling strategies |
+| `personal-os-charisma` | Founder persona, negotiation, and charisma engineering |
+
+### Agents (v0.3.0)
+
+| Agent | Purpose |
+|-------|---------|
+| `strategy-advisor` | Holistic marketing strategy analysis combining growth frameworks, competitive intelligence, and funnel optimization |
+| `content-optimizer` | Content quality enhancement using behavioral science, sensory engineering, and platform algorithm insights |
+| `campaign-auditor` | End-to-end campaign review covering compliance, brand consistency, and performance metrics |
+
+### Hooks (v0.3.0)
+
+| Hook | Trigger | Purpose |
+|------|---------|--------|
+| SessionStart | Session begins | Loads brand memory context and user preferences for personalized experience |
+| PreToolUse | Before any tool call | Guards paid actions — ensures wizard completion and cost confirmation before charging |
+| Stop | Session ends | Auto-saves brand memory, conversation summaries, and engagement metrics |
+
 ### Background & Utility
 
 | Skill | What It Does |
-|-------|-------------|
+|-------|-----------|
 | **brand-memory** | Auto-record brand files, prompts, and metadata for personalization (runs silently) |
 | **upload-media** | Handle user uploads — routes files to correct backend endpoint, validates format |
 
 ## Pricing
 
 | Amount | Points |
-|--------|--------|
+|--------|-------|
 | **$1 USD** | 1 pt |
 | **$20 USD** (min) | 20 pts |
 
 | Action | Cost |
-|--------|------|
+|--------|-----|
 | Landing Page (per page × per TA) | **200 pts / page, linear**. Page count: any integer **8-21** (`requested_stripe_count`) — not limited to 8 or 10. Examples: 8 pages × 1 TA = 1,600 pts; 10 × 1 = 2,000 pts; 12 × 2 = 4,800 pts; 15 × 1 = 3,000 pts |
 | Regenerate 1 page | 100 pts (~$3) |
 | Quick Ad (single image) | 200 pts (~$7) |

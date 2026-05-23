@@ -1,6 +1,6 @@
 {
   "name": "salecraft-plugin",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "AI marketing plugin for any MCP-compatible platform: free consultation, Landing Page generation, homepage building, social publishing, and ad campaigns",
   "author": "Martin @ connactai",
   "license": "MIT",
@@ -11,7 +11,14 @@
     "landing-page",
     "ai-agent",
     "ads",
-    "social-media"
+    "social-media",
+    "behavioral-science",
+    "influence",
+    "seo",
+    "geo",
+    "growth-strategy",
+    "negotiation",
+    "content-engineering"
   ],
   "repository": {
     "type": "git",
