@@ -44,27 +44,32 @@ Q6 constraints), then layer the reel-specific block below.
 
 > 「想做幾秒鐘的影片？」
 
-| Option | duration_seconds | Use case |
-|---|---|---|
-| 6-15 秒 (snackable hook) | 9 | TikTok / Reels viral; single hook + CTA |
-| 15-30 秒 (standard) | 22 | Most reels; problem→solution arc |
-| 30-60 秒 (narrative) | 45 | Storytelling, tutorial, testimonial |
-| 60-90 秒 (educational) | 75 | Deep how-to, longer demo |
+| Option | duration_seconds | Use case | Algorithm note |
+|---|---|---|---|
+| 6-15 秒 (snackable hook) | 9 | TikTok / Reels viral; single hook + CTA | Highest completion rate → algorithm boost |
+| 15-30 秒 (standard) | 22 | Most reels; problem→solution arc | IG Reels sweet spot for education; TikTok engagement peak |
+| 30-60 秒 (narrative) | 45 | Storytelling, tutorial, testimonial | TikTok Dec 2024 update rewards 15-20s sustained engagement |
+| 60-90 秒 (educational) | 75 | Deep how-to, longer demo | TikTok 1-3min = Creator Rewards eligible (RPM $0.40-$1.00+) |
+| 3-10 分鐘 (deep content) | 300 | In-depth tutorial, documentary | TikTok data: highest average view count (2x short videos) |
 
 ### Reel-Q5 — Hook style
 
 > 「開頭怎麼吸住人？前 3 秒最關鍵」
 
-| Option | hook_framework |
-|---|---|
-| 痛點刺破：先講人最痛的問題 | pas |
-| 反直覺：「停下來不要再做 X」 | contrarian |
-| 故事冷開：「去年我...」 | storytelling |
-| FOMO：「不知道這件事就虧了」 | fomo |
-| 提問：「如果我告訴你...」 | question |
-| 視覺奇襲：第一幀就反差爆炸 | pattern_interrupt |
-| Before/After：頭 2 秒就看出轉變 | before_after |
-| 數字震撼：「78% 的人不知道...」 | stat_shock |
+| Option | hook_framework | Best for |
+|---|---|---|
+| 痛點刺破：先講人最痛的問題 | pas | Education, solution products — high save rate |
+| 反直覺：「停下來不要再做 X」 | contrarian | Highest engagement (comments) — drives debate |
+| 故事冷開：「去年我...」 | storytelling | Best completion rate — sustained 15-20s engagement |
+| FOMO：「不知道這件事就虧了」 | fomo | Best share rate — DM sends (IG #1 signal) |
+| 提問：「如果我告訴你...」 | question | Strong for TikTok search SEO (keyword in speech) |
+| 視覺奇襲：第一幀就反差爆炸 | pattern_interrupt | Highest 3-second retention → algorithm push |
+| Before/After：頭 2 秒就看出轉變 | before_after | Health/beauty best performer — concrete proof |
+| 數字震撼：「78% 的人不知道...」 | stat_shock | Tech/finance top performer — authority + shareability |
+
+63% of high-CTR videos hook viewers in the first 3 seconds. Videos with >65% 3-second retention get 4-7x more distribution.
+
+**TikTok Dec 2024 update note**: Hook alone is no longer enough — the algorithm now tracks 15-20 second sustained engagement. Recommend combining a strong hook with quality mid-content (not just a hook followed by filler).
 
 If unsure, leave as `null` — Strategist picks based on funnel + audience.
 

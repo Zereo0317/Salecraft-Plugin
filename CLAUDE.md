@@ -763,9 +763,9 @@ PAID 不是升級版。PAID 只是執行工具。
 
 ---
 
-## 📋 Skills（27 個）
+## 📋 Skills（28 個）
 
-### 🆓 Think + Position + Engage + Convert + Retain + Reflect + Governance（FREE，14 個）
+### 🆓 Think + Position + Engage + Convert + Retain + Reflect + Governance（FREE，15 個）
 
 | Skill | 用途 |
 |-------|------|
@@ -785,6 +785,7 @@ PAID 不是升級版。PAID 只是執行工具。
 | `careful-publish` | 高風險內容上線前 final gate |
 | `journey-qa` | E2E 顧客旅程測試 |
 | `campaign-ship` | 上線 checklist、版本驗證、監控計畫 |
+| `social-growth-strategist` | IG/TikTok 演算法解析、內容策略、發文時間、格式選擇、成長藍圖——基於平台真實數據的社群成長顧問。Trigger:「IG 怎麼經營」「TikTok 演算法」「幾點發文」「內容比例」「怎麼漲粉」 |
 
 ### 💰 Package + Attract（執行、付費）
 
@@ -1013,6 +1014,9 @@ https://landingai.info/{locale}/lp/{campaign_id}
 | 想測體驗 | `journey-qa` |
 | 想要 SOP / 文件 | `document-release` |
 | 跨頁價格不一致 | `guard-offer` |
+| IG/TikTok 成長、演算法、發文時間、內容策略 | `social-growth-strategist` |
+| 想知道該發什麼內容、幾點發、用什麼格式 | `social-growth-strategist` |
+| 問 Reels / 短影音 / carousel 怎麼做 | `social-growth-strategist` |
 
 ### Contact Support
 

@@ -51,6 +51,14 @@ If user mentions short video / reel / 短影音 → handoff to `/salecraft-reels
 Read `lib/salecraft-discovery.md` and execute Q1 through Q6 in order, using
 `AskUserQuestion` for every question. Branch as documented.
 
+**Format selection guidance** (recommend based on user's goal):
+- **Discovery / 漲粉** → Carousel (IG: 0.55% engagement, 2x single images) or Reel (37.8% reach rate)
+- **Authority / 建立專業感** → Carousel (highest save rates, "mini-blog" for expertise)
+- **Conversion / 導購** → Single image with strong CTA or Carousel ending in CTA
+- **Engagement / 互動** → Reel with hook formula (DM sends = IG #1 growth signal, 3-5x weight vs likes)
+
+**Carousel vs Reel decision**: Finance/B2B carousels outperform Reels (Hootsuite data). Entertainment/beauty Reels outperform carousels. When in doubt, ask the user's primary goal.
+
 Skip questions whose answers are already known from:
 - `brand_memory` (audience defaults, style preferences)
 - `brand_buffer` (recent campaign goals, recurring constraints)
