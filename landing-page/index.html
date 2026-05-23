@@ -15,11 +15,15 @@
   <meta property="og:description" content="Free AI marketing consultation + paid campaign execution. Landing pages, Reels, social publishing, ads — works on ChatGPT, Claude, Gemini, and more.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://github.com/connactai/Salecraft-Plugin">
+  <meta property="og:image" content="https://salecraft.ai/opengraph-image">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="SaleCraft Plugin — AI Marketing Consultant for Product Sellers">
   <meta name="twitter:description" content="Free AI marketing consultation + paid campaign execution. Works on any AI platform — ChatGPT, Claude, Gemini, Kimi.">
+  <meta name="twitter:image" content="https://salecraft.ai/opengraph-image">
 
   <!-- JSON-LD -->
   <script type="application/ld+json">
@@ -34,7 +38,7 @@
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "USD",
-      "description": "Free consultation. Paid tools start at $10."
+      "description": "Free consultation. Pay-as-you-go: $1 = 1 point. Min top-up $20."
     },
     "author": {
       "@type": "Person",
@@ -67,10 +71,10 @@
       --color-text-secondary: #a0a0b8;
       --color-text-muted: #6b6b82;
 
-      --color-accent: #7c5cfc;
-      --color-accent-light: #9b80ff;
-      --color-accent-dark: #5a3ad4;
-      --color-accent-glow: rgba(124, 92, 252, 0.15);
+      --color-accent: #e84480;
+      --color-accent-light: #f06098;
+      --color-accent-dark: #c03468;
+      --color-accent-glow: rgba(232, 68, 128, 0.15);
 
       --color-green: #34d399;
       --color-green-bg: rgba(52, 211, 153, 0.1);
@@ -90,7 +94,7 @@
       --radius-xl: 28px;
 
       --shadow-card: 0 4px 24px rgba(0,0,0,0.3);
-      --shadow-glow: 0 0 40px rgba(124, 92, 252, 0.2);
+      --shadow-glow: 0 0 40px rgba(232, 68, 128, 0.2);
     }
 
     /* ============================================
@@ -107,6 +111,7 @@
       -webkit-font-smoothing: antialiased;
     }
     a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 2px solid var(--color-accent-light); outline-offset: 2px; }
     img { max-width: 100%; height: auto; display: block; }
 
     /* ============================================
@@ -270,7 +275,7 @@
       gap: 8px;
       padding: 6px 14px;
       background: var(--color-accent-glow);
-      border: 1px solid rgba(124, 92, 252, 0.25);
+      border: 1px solid rgba(232, 68, 128, 0.25);
       border-radius: 100px;
       font-size: 0.8rem;
       font-weight: 500;
@@ -296,7 +301,7 @@
       margin-bottom: 20px;
     }
     .hero-title .gradient-text {
-      background: linear-gradient(135deg, var(--color-accent-light), var(--color-pink), var(--color-cyan));
+      background: linear-gradient(135deg, var(--color-accent-light), hsl(16,80%,60%), hsl(35,90%,55%));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -646,7 +651,7 @@
       position: relative;
     }
     .pricing-card.featured::before {
-      content: 'Most Popular';
+      content: 'Pay As You Go';
       position: absolute;
       top: -12px;
       left: 50%;
@@ -732,7 +737,7 @@
       width: 28px;
       height: 28px;
       background: var(--color-accent-glow);
-      border: 1px solid rgba(124, 92, 252, 0.3);
+      border: 1px solid rgba(232, 68, 128, 0.3);
       border-radius: 50%;
       font-size: 0.8rem;
       font-weight: 700;
@@ -797,7 +802,7 @@
        CTA
        ============================================ */
     .cta-section {
-      background: linear-gradient(135deg, rgba(124, 92, 252, 0.08) 0%, rgba(244, 114, 182, 0.06) 100%);
+      background: linear-gradient(135deg, rgba(232, 68, 128, 0.08) 0%, rgba(244, 114, 182, 0.06) 100%);
       border-top: 1px solid var(--color-border-subtle);
       border-bottom: 1px solid var(--color-border-subtle);
     }
@@ -892,7 +897,7 @@
         <div class="nav-logo-icon">S</div>
         SaleCraft
       </a>
-      <button class="menu-toggle" aria-label="Toggle menu">
+      <button type="button" class="menu-toggle" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links">
@@ -901,9 +906,10 @@
         <li><a href="#use-cases">Use Cases</a></li>
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="#install">Install</a></li>
+        <li><a href="https://github.com/connactai/Salecraft-Plugin" target="_blank" rel="noopener">GitHub</a></li>
         <li>
-          <a href="https://github.com/connactai/Salecraft-Plugin" class="nav-cta" target="_blank" rel="noopener">
-            GitHub &rarr;
+          <a href="https://salecraft.ai/en/auth" class="nav-cta" target="_blank" rel="noopener">
+            Sign Up &rarr;
           </a>
         </li>
       </ul>
@@ -926,7 +932,7 @@
           SaleCraft is a free AI marketing plugin that works on any AI platform &mdash; ChatGPT, Claude, Gemini, Kimi, and more. Expert consultation, landing pages, social content, and ads &mdash; built for physical product sellers.
         </p>
         <div class="hero-actions">
-          <a href="#install" class="btn-primary">
+          <a href="https://salecraft.ai/en/auth" class="btn-primary" target="_blank" rel="noopener">
             Get Started &rarr;
           </a>
           <a href="https://github.com/connactai/Salecraft-Plugin" class="btn-secondary" target="_blank" rel="noopener">
@@ -935,8 +941,8 @@
           </a>
         </div>
       </div>
-      <div class="hero-visual">
-        <div class="terminal">
+      <div class="hero-visual" aria-label="Terminal demo showing SaleCraft's free marketing consultation">
+        <div class="terminal" role="img" aria-label="Terminal showing SaleCraft greeting: marketing diagnosis, competitor research, strategy planning, and brand health check — all free">
           <div class="terminal-header">
             <div class="terminal-dot red"></div>
             <div class="terminal-dot yellow"></div>
@@ -974,20 +980,20 @@
   <section class="stats">
     <div class="container stats-inner">
       <div class="stat-item">
-        <div class="stat-value purple">10</div>
+        <div class="stat-value purple">27</div>
         <div class="stat-label">Specialized Skills</div>
       </div>
       <div class="stat-item">
-        <div class="stat-value green">9</div>
-        <div class="stat-label">AI Marketing Agents</div>
+        <div class="stat-value green">4</div>
+        <div class="stat-label">AI Pipeline Stages</div>
       </div>
       <div class="stat-item">
-        <div class="stat-value cyan">10</div>
+        <div class="stat-value cyan">15</div>
         <div class="stat-label">Supported Locales</div>
       </div>
       <div class="stat-item">
-        <div class="stat-value pink">200+</div>
-        <div class="stat-label">MCP Tools Available</div>
+        <div class="stat-value pink">13</div>
+        <div class="stat-label">Free Skills</div>
       </div>
     </div>
   </section>
@@ -1041,7 +1047,7 @@
       <div class="section-label">Plugin Skills</div>
       <h2 class="section-title">Everything you need to<br>market a product</h2>
       <p class="section-subtitle">
-        10 specialized skills powered by 9 AI marketing agents &mdash; from brand strategy to ad deployment.
+        27 specialized skills powered by a 4-stage AI pipeline &mdash; from brand strategy to ad deployment.
       </p>
       <div class="skills-grid">
         <!-- Free skills -->
@@ -1108,6 +1114,51 @@
           <div class="skill-name">publish-ads</div>
           <div class="skill-desc">Create Meta and Google ad campaigns. Audience targeting, budget allocation, creative generation.</div>
           <div class="skill-meta">/mx-publish &middot; Paid traffic</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-icon">&#x1F4AC;</span>
+            <span class="skill-tag free">FREE</span>
+          </div>
+          <div class="skill-name">engage-operator</div>
+          <div class="skill-desc">Interactive scripts, FAQ responses, and booking flows. Automate customer conversations and engagement.</div>
+          <div class="skill-meta">Engagement &middot; Conversation flows</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-icon">&#x1F91D;</span>
+            <span class="skill-tag free">FREE</span>
+          </div>
+          <div class="skill-name">conversion-closer</div>
+          <div class="skill-desc">Sales scripts, objection handling, and closing techniques. Turn prospects into paying customers.</div>
+          <div class="skill-meta">Sales &middot; Objection handling</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-icon">&#x1F9E0;</span>
+            <span class="skill-tag free">FREE</span>
+          </div>
+          <div class="skill-name">brand-memory</div>
+          <div class="skill-desc">Persistent brand identity across sessions. Your tone, colors, and positioning stay consistent every time.</div>
+          <div class="skill-meta">Identity &middot; Cross-session persistence</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-icon">&#x1F3AF;</span>
+            <span class="skill-tag paid">PAID</span>
+          </div>
+          <div class="skill-name">audience-target</div>
+          <div class="skill-desc">AI-powered audience segmentation. Identify and profile your ideal customer groups for precision targeting.</div>
+          <div class="skill-meta">Targeting &middot; Audience segmentation</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-header">
+            <span class="skill-icon">&#x270F;&#xFE0F;</span>
+            <span class="skill-tag paid">PAID</span>
+          </div>
+          <div class="skill-name">edit-landing</div>
+          <div class="skill-desc">Post-generation landing page editing and refinement. Tweak copy, layout, and visuals after initial generation.</div>
+          <div class="skill-meta">Editing &middot; LP refinement</div>
         </div>
       </div>
     </div>
@@ -1194,53 +1245,28 @@
       <p class="section-subtitle">
         Consultation is always free. You only spend points when AI generates assets. $1 = 1 point.
       </p>
-      <div class="pricing-grid">
-        <div class="pricing-card">
-          <div class="pricing-name">Starter</div>
-          <div class="pricing-price">
-            <span class="pricing-currency">$</span><span class="pricing-amount">10</span>
-            <span class="pricing-period">10 pts</span>
+      <div style="max-width: 640px; margin: 48px auto 0;">
+        <div class="pricing-card featured" style="text-align: center;">
+          <div class="pricing-name" style="font-size: 1.3rem;">Pay only for what you build</div>
+          <div class="pricing-price" style="margin: 16px 0;">
+            <span class="pricing-currency">$</span><span class="pricing-amount">1</span>
+            <span class="pricing-period">= 1 point</span>
           </div>
-          <div class="pricing-desc">Perfect for testing the waters with your first campaign.</div>
-          <ul class="pricing-features">
-            <li><span class="check">&#10003;</span> Free marketing consultation</li>
-            <li><span class="check">&#10003;</span> 1 AI Landing Page</li>
-            <li><span class="check">&#10003;</span> 3 Social media posts</li>
-            <li><span class="check">&#10003;</span> Brand health check</li>
-          </ul>
-          <a href="https://github.com/connactai/Salecraft-Plugin" class="pricing-cta btn-secondary">Get Started</a>
-        </div>
-        <div class="pricing-card featured">
-          <div class="pricing-name">Standard</div>
-          <div class="pricing-price">
-            <span class="pricing-currency">$</span><span class="pricing-amount">20</span>
-            <span class="pricing-period">20 pts</span>
+          <div class="pricing-desc" style="text-align: left; margin: 0 auto 24px; max-width: 480px;">
+            Consultation is always free. Points are only spent when AI generates assets for you.
           </div>
-          <div class="pricing-desc">Full marketing kit for a product launch. The most popular choice.</div>
-          <ul class="pricing-features">
-            <li><span class="check">&#10003;</span> Everything in Starter</li>
-            <li><span class="check">&#10003;</span> 1 Short video (Reel)</li>
-            <li><span class="check">&#10003;</span> 5 Social media posts</li>
-            <li><span class="check">&#10003;</span> QR Code for packaging</li>
-            <li><span class="check">&#10003;</span> Competitor research</li>
+          <ul class="pricing-features" style="text-align: left; max-width: 480px; margin: 0 auto 28px;">
+            <li><span class="check">&#10003;</span> <strong>Consultation</strong> &mdash; FREE (13 of 27 skills)</li>
+            <li><span class="check">&#10003;</span> <strong>Landing Page</strong> &mdash; 200 pts/page (8-21 pages, ~$1,600-$4,200)</li>
+            <li><span class="check">&#10003;</span> <strong>Reels / Short Video</strong> &mdash; 100 pts/sec (10s = $1,000)</li>
+            <li><span class="check">&#10003;</span> <strong>Social Copy</strong> &mdash; 100 pts/set</li>
+            <li><span class="check">&#10003;</span> <strong>Quick Ad</strong> &mdash; 200 pts</li>
+            <li><span class="check">&#10003;</span> <strong>Carousel</strong> &mdash; 300 + 100&times;N pts</li>
           </ul>
-          <a href="https://github.com/connactai/Salecraft-Plugin" class="pricing-cta btn-primary">Get Started</a>
-        </div>
-        <div class="pricing-card">
-          <div class="pricing-name">Full Suite</div>
-          <div class="pricing-price">
-            <span class="pricing-currency">$</span><span class="pricing-amount">40</span>
-            <span class="pricing-period">40 pts</span>
+          <div style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 24px;">
+            Min top-up: $20 &nbsp;|&nbsp; 50 free pts on signup
           </div>
-          <div class="pricing-desc">Complete marketing operation with ads, KOL analysis, and deep research.</div>
-          <ul class="pricing-features">
-            <li><span class="check">&#10003;</span> Everything in Standard</li>
-            <li><span class="check">&#10003;</span> Meta &amp; Google Ads setup</li>
-            <li><span class="check">&#10003;</span> KOL / Influencer analysis</li>
-            <li><span class="check">&#10003;</span> Deep market research</li>
-            <li><span class="check">&#10003;</span> Multi-locale adaptation</li>
-          </ul>
-          <a href="https://github.com/connactai/Salecraft-Plugin" class="pricing-cta btn-secondary">Get Started</a>
+          <a href="https://salecraft.ai/en/auth" class="pricing-cta btn-primary" style="display: inline-flex; justify-content: center;" target="_blank" rel="noopener">Start Free Consultation</a>
         </div>
       </div>
     </div>
@@ -1255,32 +1281,32 @@
         <div>
           <div class="install-step">
             <div class="install-step-number">1</div>
-            <h3>Add the plugin</h3>
-            <p>Add the SaleCraft plugin URL to your AI platform's MCP settings.</p>
+            <h3>Sign up at salecraft.ai</h3>
+            <p>Create your account at <a href="https://salecraft.ai/en/auth" style="color: var(--color-accent-light);" target="_blank" rel="noopener">salecraft.ai</a> (Google or Email). Get 50 free points on signup.</p>
           </div>
           <div class="install-step">
             <div class="install-step-number">2</div>
-            <h3>Register &amp; connect</h3>
-            <p>Sign up at <strong>salecraft.ai</strong> (Google or Email), bind your Meta &amp; Google accounts.</p>
+            <h3>Connect SaleCraft to your AI</h3>
+            <p>Paste the prompt below into any AI assistant (Claude, ChatGPT, Gemini, etc.) to start SaleCraft as your marketing consultant.</p>
           </div>
           <div class="install-step">
             <div class="install-step-number">3</div>
             <h3>Start consulting</h3>
-            <p>Tell your AI assistant what you sell — SaleCraft will start a free marketing consultation.</p>
+            <p>Tell your AI assistant what you sell — SaleCraft will start a free marketing consultation. No credit card required.</p>
           </div>
         </div>
         <div>
           <div class="code-block">
             <div class="code-header">
-              <span>terminal</span>
-              <button class="code-copy" onclick="navigator.clipboard.writeText('git clone https://github.com/connactai/Salecraft-Plugin.git')">Copy</button>
+              <span>paste into your AI assistant</span>
+              <button class="code-copy" onclick="navigator.clipboard.writeText('Please fetch the full CLAUDE.md at the URL below\nand follow its instructions as my marketing consultant:\nhttps://raw.githubusercontent.com/connactai/Salecraft-Plugin/master/CLAUDE.md')">Copy</button>
             </div>
             <div class="code-body">
-              <span class="code-comment"># 1. Clone the repo</span><br>
-              git clone https://github.com/connactai/<br>&nbsp;&nbsp;Salecraft-Plugin.git<br>
+              <span class="code-comment"># In your AI assistant (Claude, ChatGPT, Gemini, etc.):</span><br>
               <br>
-              <span class="code-comment"># 2. In your AI assistant, type:</span><br>
-              <span class="code-string">/mx</span><br>
+              Please fetch the full CLAUDE.md at the URL below<br>
+              and follow its instructions as my marketing consultant:<br>
+              <span class="code-string">https://raw.githubusercontent.com/connactai/<br>&nbsp;&nbsp;Salecraft-Plugin/master/CLAUDE.md</span><br>
               <br>
               <span class="code-comment"># That's it. SaleCraft starts talking.</span>
             </div>
@@ -1313,12 +1339,11 @@
       <div class="section-label">Ready?</div>
       <h2 class="section-title">Start your free<br>consultation today</h2>
       <p class="section-subtitle">
-        No credit card required. No sign-up to chat. Just clone, type <code>/mx</code>, and tell SaleCraft what you sell.
+        No credit card required. Just sign up, paste the prompt into your AI, and tell SaleCraft what you sell.
       </p>
       <div class="cta-actions">
-        <a href="https://github.com/connactai/Salecraft-Plugin" class="btn-primary" target="_blank" rel="noopener">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          Clone from GitHub
+        <a href="https://salecraft.ai/en/auth" class="btn-primary" target="_blank" rel="noopener">
+          Start Free Consultation &rarr;
         </a>
         <a href="#install" class="btn-secondary">
           View Install Guide
@@ -1373,6 +1398,18 @@
             document.querySelector('.nav-links').style.display = 'none';
           }
         }
+      });
+    });
+
+    // Copy button feedback
+    document.querySelectorAll('.code-copy').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var orig = this.textContent;
+        this.textContent = 'Copied!';
+        this.style.borderColor = 'var(--color-green)';
+        this.style.color = 'var(--color-green)';
+        var el = this;
+        setTimeout(function() { el.textContent = orig; el.style.borderColor = ''; el.style.color = ''; }, 2000);
       });
     });
 
