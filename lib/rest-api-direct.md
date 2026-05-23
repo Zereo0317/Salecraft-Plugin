@@ -141,6 +141,16 @@ All endpoints below assume `Authorization: Bearer <access_token>` unless marked 
 | `POST` | `/spokespersons/{sp_id}/upload-photo` | Upload face photo |
 | `POST` | `/spokespersons/{sp_id}/upload-voice` | Upload voice sample |
 
+### Background Tasks (unified async status)
+| Method | Path | Purpose |
+|--------|------|---------|
+| `GET` | `/tasks` | List user's tasks (query params: `type`, `status`, `acknowledged`, `limit`) |
+| `GET` | `/tasks/{task_id}` | Poll single task status + result (unified polling endpoint) |
+| `POST` | `/tasks/{task_id}/acknowledge` | Mark task result as consumed |
+| `DELETE` | `/tasks/{task_id}` | Dismiss/delete a task |
+
+> All generation endpoints (`generate_session`, `generate_ad`, `generate_carousel`, `seo_optimize`) now return a `task_id` (or `task_ids` array). Poll `GET /tasks/{task_id}` every 10-30s until `status` is `"completed"` or `"failed"`. The `result` field contains the full output on completion.
+
 ### Pricing & credits
 | Method | Path | Purpose |
 |--------|------|---------|
