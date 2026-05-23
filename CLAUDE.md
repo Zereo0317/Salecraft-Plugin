@@ -493,10 +493,25 @@ saleskit（免費諮詢、無 session、不寫資料）
 ║    update_session(wizard_shared_data.requested_stripe_count=N) ║
 ║                                                                ║
 ║    立刻算扣點：total_pts = 200 × stripe_count × num_tas        ║
-║    Cost 複誦**只列使用者答過的規格**、禁編 Page 1 / 每頁內容    ║
 ║    **禁止頁數答完前 Cost 複誦**（沒總額 = 沒資格複誦）         ║
 ╠═══════════════════════════════════════════════════════════════╣
-║  ★ Step 7 — 啟動詞 + Pre-Flight Audit                          ║
+║  ★ Step 6.5 — 免費版面預覽（NEW — preview_session）            ║
+║    頁數填完後、Cost 複誦前、主動提議免費預覽：                 ║
+║    「頁數收到。我可以免費跑一次版面預覽——看到每頁的標題、     ║
+║     主題、情緒走向。不扣點、約 1-2 分鐘。要看嗎？」           ║
+║                                                                ║
+║    使用者同意 → preview_session(session_id, ta_group_ids_json,  ║
+║                                page_count)                     ║
+║    → 展示每頁結構：section_type + headline + 情緒描述          ║
+║    → 使用者 OK → 進 Cost 複誦                                  ║
+║    → 使用者要改 → 回 Step 5 調 spec、可重跑預覽（免費不限次）  ║
+║    → 使用者說「不用看 / 直接生」→ 跳 Cost 複誦                ║
+║                                                                ║
+║    預覽 0 pts、結果是策略引擎真實輸出（不是 LLM 編的）         ║
+║    規則：禁止跳過預覽直接 Cost 複誦（使用者拒絕看才跳過）      ║
+╠═══════════════════════════════════════════════════════════════╣
+║  ★ Step 7 — Cost 複誦 + 啟動詞 + Pre-Flight Audit              ║
+║    **只列使用者答過的規格**、禁編 Page 1 / 每頁內容            ║
 ║    啟動詞：開始 / go / 執行 / 開跑 / start / do it / 跑吧       ║
 ║    模糊「好 / OK」不算、要再問一次                             ║
 ║    啟動詞確認後 → get_session 逐項對 checklist、全綠才 Step 8   ║

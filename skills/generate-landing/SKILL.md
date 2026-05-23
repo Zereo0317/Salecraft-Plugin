@@ -869,7 +869,47 @@ tas    = session_state["wizard_ta_groups"]
 - ❌ 素材如何被用（「所有菜品、空間、人物視覺:AI 生成」這種 stripe-level 決策）
 - ❌ 「文字敘事:從官網中文內容翻譯改寫成英文 editorial 語氣」這種 Architect 決策
 
-若使用者追問「那實際每頁長怎樣？」→ 老實回「那是 AI 生成階段才會決定的、我現在沒有這個資料、生完才能看到。你要先看草稿再生嗎？我們目前沒有『只產結構不扣點』的預覽模式，只能整份生。」
+若使用者追問「那實際每頁長怎樣？」→ 引導到預覽：「我可以免費幫你跑一次版面預覽——看到每頁的標題、段落主題、色系、還有情緒走向。不扣點、約 1-2 分鐘。要看嗎？」→ 使用者同意 → 呼叫 `preview_session`。
+
+### 免費版面預覽（Step 6.5-preview）
+
+**何時觸發**：Step 6 頁數填完後、Cost 複誦前。使用者主動問「先看看結構」、或 LLM 主動提：
+
+> 「頁數收到。在扣點之前、我可以**免費**跑一次版面預覽——你會看到每頁的標題、主題類型、情緒走向和色系配置。要先看嗎？」
+
+**呼叫方式**：
+```
+preview_session(session_id, ta_group_ids_json, page_count)
+→ { previews: [{ ta_name, visual_theme, color_palette, page_count, stripes: [...] }] }
+```
+
+**回傳展示格式**（每個 TA 獨立展示）：
+```
+🎨 受眾「{ta_name}」版面預覽（{page_count} 頁、{visual_theme} 風格）
+
+📖 頁面結構：
+  1. 🟠 首屏（hero）—「{headline}」— 開場吸引、建立品牌印象
+  2. 🔴 痛點（pain_point）—「{headline}」— 引起共鳴、放大問題
+  3. 🟢 功能（feature）—「{headline}」— 展示解方
+  4. 🟢 好處（benefit）—「{headline}」— 未來美好生活
+  5. 🔵 信任（trust）—「{headline}」— 數據 / 認證 / 見證
+  ...
+  N. 🟠 行動（cta）—「{headline}」— 踏出改變的第一步
+
+🎨 色系：{color_palette 描述}
+🧠 行銷策略：{psychology_summary}
+```
+
+**使用者看完可以**：
+- 「OK 就這樣、開始生」→ 進 Cost 複誦 + 啟動詞
+- 「第 3 頁改成比較頁」→ 調整 spec、可以再跑一次預覽（免費不限次數）
+- 「色系不喜歡」→ 回 Step 5 改 primary_color、重跑預覽
+
+**規則**：
+- 預覽 0 pts、不限次數
+- 預覽結果是 AI 策略引擎的真實輸出（不是 LLM 編的）
+- 預覽結構和最終生成會非常接近（標題可能微調、但頁面類型和順序不變）
+- **禁止**跳過預覽直接 Cost 複誦（使用者拒絕看才跳過）
 
 ### 啟動詞白名單
 
