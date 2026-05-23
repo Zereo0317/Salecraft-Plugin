@@ -103,6 +103,7 @@ All endpoints below assume `Authorization: Bearer <access_token>` unless marked 
 | `GET` | `/sessions/{session_id}` | Session detail (poll status here) |
 | `PUT` | `/sessions/{session_id}` | Update wizard data (TA groups, brand info) |
 | `GET` | `/sessions/{session_id}/ta-statuses` | TA group statuses |
+| `POST` | `/sessions/{session_id}/preview` | **FREE.** Layout preview (Strategist + Architect, no images) |
 | `POST` | `/sessions/{session_id}/generate` | **PAID.** Trigger LP generation pipeline |
 | `DELETE` | `/sessions/{session_id}` | Delete session |
 | `GET` | `/sessions/{session_id}/content` | Get all stripes content for the session |
@@ -110,6 +111,7 @@ All endpoints below assume `Authorization: Bearer <access_token>` unless marked 
 ### Quick Ads & Carousel (PAID)
 | Method | Path | Purpose |
 |--------|------|---------|
+| `POST` | `/sessions/{session_id}/post-preview` | **FREE.** Post layout preview (Enricher + Architect, no images) |
 | `POST` | `/sessions/{session_id}/generate-ad` | Single ad image (~5 min, 200 pts) |
 | `GET` | `/sessions/{session_id}/ad-result/{project_id}` | Poll ad result |
 | `POST` | `/sessions/{session_id}/generate-carousel` | Multi-image carousel (~8 min, 300+100×N pts) |

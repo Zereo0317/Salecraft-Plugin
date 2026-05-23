@@ -100,6 +100,16 @@ ta_statuses = mcp_tool_call("landing_ai_mcp", "get_ta_statuses", {
 })
 # Extract ta_group_id values, e.g. ["ta_1"]
 
+# 3.5 FREE layout preview (optional but recommended before paid generation)
+preview = mcp_tool_call("landing_ai_mcp", "preview_session", {
+  "user_token": token,
+  "session_id": session.id,
+  "ta_group_ids_json": json.dumps(["ta_1"]),
+  "page_count": 8
+})
+# Returns: { previews: [{ ta_name, visual_theme, stripes: [{order, section_type, headline, ...}] }] }
+# Show to user → they approve or request changes → then proceed to generate
+
 # 4. Trigger generation
 mcp_tool_call("landing_ai_mcp", "generate_session", {
   "user_token": token,
