@@ -126,6 +126,20 @@ All endpoints below assume `Authorization: Bearer <access_token>` unless marked 
 
 (Stripe-level editing endpoints — text/image/overlay/crop/regenerate — are exposed under `/landing/...` and `/sessions/{id}/projects/{pid}/stripes/...`. See `skills/edit-landing/SKILL.md` for the per-action mappings.)
 
+### SEO / GEO / AEO optimization (PAID, 500 pts — beta: FREE)
+| Method | Path | Purpose |
+|--------|------|---------|
+| `GET` | `/{project_id}/seo-optimize/preflight` | Check if a campaign is ready for SEO optimization; returns `credit_cost`, `will_charge`, `current_balance`, `has_cached`, `sufficient` |
+| `POST` | `/{project_id}/seo-optimize` | **PAID.** Run full SEO + GEO + AEO optimization on a landing page (meta tags, Open Graph, JSON-LD schema, FAQ schema, `llms.txt`, GEO summary). Body: `{ "force": false }` — set `true` to regenerate even if cached result exists. Returns a `task_id`; poll via `GET /tasks/{task_id}` |
+| `POST` | `/{project_id}/seo-verify/baseline` | Run baseline SEO verification **before** optimization — captures the "before" snapshot for comparison |
+| `POST` | `/{project_id}/seo-verify/check` | Run SEO verification check **after** optimization — captures the "after" snapshot |
+| `GET` | `/{project_id}/seo-verify/report` | Get before/after SEO comparison report (requires both baseline and check to have been run) |
+| `PATCH` | `/{campaign_id}/seo` | Update individual SEO metadata fields. Body: `{ "title": "...", "description": "...", "keywords": "...", "og_image": "..." }` — all fields optional, only provided fields are updated |
+
+> **One-click AI optimization**: For most use cases, call `POST /{project_id}/seo-optimize` — AI reads the LP content and generates all SEO/GEO/AEO assets automatically. The `PATCH /{campaign_id}/seo` endpoint is for manual overrides after the AI pass (e.g., user wants to tweak the meta title).
+>
+> **Verification workflow**: Use the `seo-verify` endpoints to measure SEO improvement. Run `baseline` before optimization, then `check` after, then `report` to see the delta. This is optional but useful for demonstrating value to users.
+
 ### Reels (short video, PAID at 100 pts/sec)
 | Method | Path | Purpose |
 |--------|------|---------|
@@ -267,6 +281,71 @@ for _ in range(20):
         image_urls = body["image_urls"]   # list[str]
         ad_copy = body["ad_copy"]          # {headline, body_text, hashtags, cta_text}
         break
+```
+
+### SEO optimization (one-click AI, 500 pts — beta: FREE)
+
+```python
+# 1. (Optional) Preflight — check readiness and cost
+r = httpx.get(
+    f"https://marketing-backend-v2-s6ykq3ylca-de.a.run.app/{project_id}/seo-optimize/preflight",
+    headers=H,
+)
+preflight = r.json()
+# → { "credit_cost": 500, "will_charge": false, "current_balance": 15210,
+#     "has_cached": false, "sufficient": true }
+
+# 2. (Optional) Capture baseline before optimization
+httpx.post(
+    f"https://marketing-backend-v2-s6ykq3ylca-de.a.run.app/{project_id}/seo-verify/baseline",
+    headers=H,
+)
+
+# 3. Run full SEO + GEO + AEO optimization
+r = httpx.post(
+    f"https://marketing-backend-v2-s6ykq3ylca-de.a.run.app/{project_id}/seo-optimize",
+    headers=H,
+    json={"force": False},  # True to regenerate even if cached
+)
+task_id = r.json()["task_id"]
+
+# 4. Poll task until complete (10-30s intervals)
+for _ in range(30):
+    time.sleep(15)
+    r = httpx.get(
+        f"https://marketing-backend-v2-s6ykq3ylca-de.a.run.app/tasks/{task_id}",
+        headers=H,
+    )
+    status = r.json()["status"]
+    if status == "completed":
+        seo_result = r.json()["result"]
+        # → meta_title, meta_description, meta_keywords, og_title, og_description,
+        #   schema_article, schema_faq, faq_items, llms_txt_content, geo_summary,
+        #   seo_score, recommendations, ...
+        break
+    if status == "failed":
+        raise RuntimeError("SEO optimization failed")
+
+# 5. (Optional) Run post-optimization verification and get comparison report
+httpx.post(
+    f"https://marketing-backend-v2-s6ykq3ylca-de.a.run.app/{project_id}/seo-verify/check",
+    headers=H,
+)
+r = httpx.get(
+    f"https://marketing-backend-v2-s6ykq3ylca-de.a.run.app/{project_id}/seo-verify/report",
+    headers=H,
+)
+report = r.json()  # before/after comparison
+
+# 6. (Optional) Manual override of specific SEO fields
+httpx.patch(
+    f"https://marketing-backend-v2-s6ykq3ylca-de.a.run.app/{campaign_id}/seo",
+    headers=H,
+    json={
+        "title": "Custom Page Title for Search Results",
+        "description": "A hand-crafted meta description.",
+    },
+)
 ```
 
 ### Upload an image (base64)
