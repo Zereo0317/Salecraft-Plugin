@@ -1,8 +1,20 @@
 {
   "name": "salecraft",
+  "version": "0.3.0",
   "description": "AI marketing consultant for physical product sellers. Works on any AI platform (ChatGPT, Claude, Gemini, Kimi, Cursor, Cline, and more). Free consultation (strategy, competitor analysis, funnel, copywriting) runs as pure conversation. Paid execution (Landing Pages, Reels, social posts, Meta/Google ads) runs through the SaleCraft hosted backend, authorized via one-time AI Token — the AI never asks for an email or password.",
   "author": {
     "name": "Connact AI",
     "email": "zereo@connact.ai"
-  }
+  },
+  "keywords": [
+    "marketing",
+    "seo",
+    "geo",
+    "influence",
+    "landing-page",
+    "social-media",
+    "ads",
+    "strategy",
+    "behavioral-science"
+  ]
 }
