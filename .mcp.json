@@ -1,0 +1,13 @@
+{
+  "_comment": "SaleCraft MCP server connections. Accessed via Service System Deep Research connector proxy (mcp_tool_call), not hosted directly by this plugin.",
+  "landing_ai_mcp": {
+    "type": "http",
+    "url": "https://marketing-backend-v2-s6ykq3ylca-de.a.run.app",
+    "description": "Landing page generation, brand management, content tools, reels, and ad generation"
+  },
+  "zereo_social_mcp": {
+    "type": "http",
+    "url": "https://zereo-backend-s6ykq3ylca-de.a.run.app",
+    "description": "Social media publishing (Meta/TikTok), ad campaigns, influencer matching, and QR codes"
+  }
+}

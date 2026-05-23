@@ -8,6 +8,9 @@ Thumbs.db
 output/
 .claude/
 
+# Plugin local settings
+.claude/*.local.md
+
 # Internal test artifacts (contain credentials and PII)
 TEST_PLAN.md
 TEST_RESULTS.md

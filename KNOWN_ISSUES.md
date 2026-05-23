@@ -23,6 +23,13 @@
 - **Flow**: User provides image → AI reads as base64 → `upload_base64` → public_url
 - **Works on**: Any AI platform that can read image data as base64
 
+### Resolved in v0.3.0
+- **Missing hooks**: Added SessionStart, PreToolUse (paid action guard), and Stop (brand-memory auto-save) hooks
+- **No agents**: Added strategy-advisor, content-optimizer, and campaign-auditor specialized agents
+- **No knowledge skills**: Added 8 knowledge-based skills covering SEO/GEO/AEO, PRISM influence framework, cognitive-behavioral science, content engineering, social theory, media algorithms, marketing growth, and personal OS/charisma
+- **Skill count discrepancy**: CLAUDE.md referenced 25 skills but directory had 27; now 35 skills total with accurate count
+- **No progressive disclosure**: New knowledge skills use references/ subdirectories for detailed content
+
 ## OPEN
 
 ### 4. AI image generation may render metadata as visible text
