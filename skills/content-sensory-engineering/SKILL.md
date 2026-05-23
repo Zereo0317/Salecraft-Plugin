@@ -86,7 +86,7 @@ Every sentence's only job is to make the reader read the next sentence. No sente
 #### Color Psychology for Products
 
 | Color Family | Emotion | Best For | Example |
-|-------------|---------|----------|---------|
+|-------------|---------|----------|--------|
 | Warm red/coral | Urgency, appetite | Food, flash sales, CTA buttons | 餐廳、限時搶購 |
 | Deep green | Natural, trust, health | Organic, wellness, finance | 有機保養、健康食品 |
 | Navy/dark blue | Authority, reliability | Tech, medical, professional | 醫美、專業設備 |
