@@ -9,7 +9,7 @@
 
 ### Authentication: PASS
 - JWT (HS256) generation works correctly
-- Access Key: `AQTEG4PCbLpDCKRfFbk9yYaFnQLfrbLT`
+- Access Key: `$KLING_ACCESS_KEY` (set via environment variable)
 - API Base: `https://api.klingai.com`
 - Token format: `Authorization: Bearer <JWT>`
 
@@ -72,9 +72,7 @@ The provided credentials are **IAM AKSK** (Access Key ID + Secret Access Key), w
 | Decoded AKSK variants | 401 - Same errors |
 
 ### How to Get a ModelArk API Key
-1. Log in: https://console.byteplus.com/auth/login/user/3001226849
-   - Username: POC33
-   - Password: (provided separately)
+1. Log in to the BytePlus console with your account credentials
 2. Navigate to: ModelArk -> API Key Management
 3. Click "Create API Key"
 4. Copy the generated key (format: typically starts with a specific prefix)
@@ -139,8 +137,8 @@ The provided credentials are **IAM AKSK** (Access Key ID + Secret Access Key), w
 
 ### For Kling 3.0
 - [ ] Top up account balance at https://app.klingai.com/global/dev
-- [ ] Run: `python generate_bali_dance.py --platform kling --access-key AQTEG4PCbLpDCKRfFbk9yYaFnQLfrbLT --secret-key PJJFMKYrphAedMLLYQ8AbDfnrRAmhmte --image /path/to/photo.png --poll`
+- [ ] Run: `python generate_bali_dance.py --platform kling --access-key $KLING_ACCESS_KEY --secret-key $KLING_SECRET_KEY --image /path/to/photo.png --poll`
 
 ### For Seedance 2.0
 - [ ] Log into BytePlus console and generate a ModelArk API key
-- [ ] Run: `python generate_bali_dance.py --platform seedance --api-key YOUR_API_KEY --image /path/to/photo.png --poll`
+- [ ] Run: `python generate_bali_dance.py --platform seedance --api-key $ARK_API_KEY --image /path/to/photo.png --poll`
