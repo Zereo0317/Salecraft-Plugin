@@ -418,7 +418,7 @@ Backend 把 Phase 2 spec 分成兩類儲存：
 - 色系：暖綠 + 乳白（親切溫暖）← 我幫你配
 - 字體：手寫（溫暖情感）← 我幫你配
 
-（兩組共用的設定：9:16 直版、CTA 連 LINE、含 Q&A 區塊、不含見證）
+（兩組共用的設定：9:16 直版、CTA 連 LINE）
 
 兩組的風格都 OK 嗎？有要改哪組的哪項直接講。
 ```
@@ -884,7 +884,7 @@ tas    = session_state["wizard_ta_groups"]
 
 這等同於 `CLAUDE.md` 最上面 **EXECUTION DISCIPLINE** 段警告的「impersonate backend agents」失誤——你用策略文取代 API call、害使用者看到假的預期、實際 LP 生出來不一樣就退費投訴。
 
-**複誦只能包含**：使用者**明確回答過的規格**（TA / 頁數 / 長寬比 / 語言 / 色系 / 字體 / CTA / Q&A / 見證）+ **該規格對應的費用**。
+**複誦只能包含**：使用者**明確回答過的規格**（TA / 頁數 / 長寬比 / 語言 / 色系 / 字體 / CTA）+ **該規格對應的費用**。
 
 **不准包含**：
 - ❌ Page 1 / Page 2 / Page N 具體標題
@@ -973,7 +973,7 @@ LLM: (silent tools)
   ✅ get_session 檢查 session 狀態
   ✅ generate_ta_options → 拿到 4-6 個 TA 候選
   ✅ validate_images（如果 session 有產品圖）+ digitize_product_text
-  ✅ Infer pass（CLAUDE.md #6.5）：aspect/color/font 從對話 + brand-scrape signal 推；language 明確問；cta silent default；qa/testimonials 不列（post-gen）
+  ✅ Infer pass（CLAUDE.md #6.5）：aspect/color/font 從對話 + brand-scrape signal 推；language 明確問；cta silent default
     ↓
 互動 1（使用者看 TA 候選、挑組——**先推薦、再列全部**）：
   「AI 分析完你的品牌，切了 [N] 組潛在受眾。
@@ -1001,8 +1001,6 @@ LLM: (silent tools)
    - 色系：墨綠 #2fa067 ← 我幫你配（官網抓到的）
    - 字體：襯線 ← 我幫你配（你做保健食品、襯線合調性）
    - CTA：官網 ajoy.com.tw ← 我幫你配
-   - Q&A：加 ← 我幫你配、猶豫型客人多
-   - 見證：不加 ← 我幫你配、你沒給評價
 
    扣 2,000 pts（你餘額 123,610、夠用）。
    有標「我幫你配」的、特別看一下、要改哪項講哪項、

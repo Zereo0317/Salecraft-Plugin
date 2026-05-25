@@ -212,19 +212,24 @@ Verified behavior:
   text fed to Gemini for stripe regeneration has been seen mangled —
   the corruption lives between "stored feedback text" and "prompt
   assembled for the regeneration agent", not in the MCP transport or
-  REST body parsing. Rewording the feedback in English / ASCII sidesteps
-  the bug.
+  REST body parsing. A **mojibake repair function** has been added to the
+  backend (2026-05) that auto-detects and reverses common double-decode
+  patterns before the prompt reaches the regeneration agent. English /
+  ASCII feedback is no longer strictly necessary but still recommended
+  for best results.
 
 **What this means for the LLM**:
 - Don't worry about Unicode for the publish / ads / session-update paths
   — raw CJK in `data_json` is fine.
-- For `regenerate_stripe`: prefer ASCII feedback, or keep CJK feedback
-  short and explicit; if the regenerated stripe comes back with garbled
-  text, retry with an English-worded feedback and translate back in
-  `update_stripe_texts`.
+- For `regenerate_stripe`: CJK feedback now works in most cases thanks
+  to the backend mojibake repair. Still **prefer ASCII feedback** when
+  possible for maximum reliability; if the regenerated stripe comes back
+  with garbled text despite the repair, retry with an English-worded
+  feedback and translate back in `update_stripe_texts`.
 - If you see `岣 / 嬤 / 娃` or similar home-radical garbled characters
   in a regenerated stripe result, that's the known double-decode — not
-  a model hallucination.
+  a model hallucination. The backend repair should catch most of these,
+  but edge cases may still slip through.
 
 ### TikTok sandbox mode (pre-App-Review)
 
