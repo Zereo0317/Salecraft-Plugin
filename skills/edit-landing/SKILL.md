@@ -673,6 +673,8 @@ crop_stripe(
   user_token, campaign_id, stripe_idx,
   top_px: int = 0,        # 從頂部砍幾 px（CropEditor 座標系、見下）
   bottom_px: int = 0,     # 從底部砍幾 px（CropEditor 座標系）
+  left_px: int = 0,       # 從左側砍幾 px（CropEditor 座標系）
+  right_px: int = 0,      # 從右側砍幾 px（CropEditor 座標系）
   image_width: int = 0,   # optional、傳實際圖寬給 backend 做精確 scaling
   image_height: int = 0   # optional、傳實際圖高
 )
@@ -681,7 +683,7 @@ crop_stripe(
 **4 個關鍵真相**：
 
 1. **獨立參數**、**不是** `crop_json` JSON wrapper
-2. **只能上下裁切**（`top_px` / `bottom_px`）、**沒有** left/right、沒有左右裁切能力
+2. **上下左右都能裁切**（`top_px` / `bottom_px` / `left_px` / `right_px`）
 3. **px 值在 CropEditor 400×600 座標系**（不是實際圖片像素）：backend 把這個座標空間 scale 到實際圖、傳 `image_width` / `image_height` 給更精準的 scaling
 4. **行為是累加**：每次 call 從 current 狀態（不是原圖）再裁、所以連續 call 會越切越小、`reset_crop` 才能回到原始
 
